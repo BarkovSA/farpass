@@ -1,11 +1,25 @@
 ﻿export type LogicalTheme = 'light' | 'dark';
 export type ColorScheme = 'orange' | 'violet';
+export type TerminalStyle = 'off' | 'vscode' | 'retro' | 'matrix';
 
 export const LIGHT_DAISY_THEME = 'emerald';
 export const DARK_DAISY_THEME = 'dim';
 
 export const THEME_STORAGE_KEY = 'themeMode';
 export const COLOR_SCHEME_KEY = 'colorScheme';
+export const TERMINAL_STYLE_KEY = 'terminalStyle';
+
+export const TERMINAL_STYLES: TerminalStyle[] = ['off', 'vscode', 'retro', 'matrix'];
+
+export function getInitialTerminalStyle(): TerminalStyle {
+  try {
+    const stored = localStorage.getItem(TERMINAL_STYLE_KEY) as TerminalStyle | null;
+    if (stored && TERMINAL_STYLES.includes(stored)) return stored;
+  } catch {
+    void 0;
+  }
+  return 'vscode';
+}
 
 export function getInitialColorScheme(): ColorScheme {
   try {

@@ -12,6 +12,7 @@ import { useConfig } from '../hooks/useConfig';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { useTerminalStyle } from '../context/TerminalStyleContext';
 
 export default function Navbar() {
   const [mode, setMode] = useState<LogicalTheme>(getInitialLogicalTheme);
@@ -19,6 +20,16 @@ export default function Navbar() {
   const { DISABLE_UPLOAD, NO_LANGUAGE_SWITCHER } = useConfig();
   const { t } = useTranslation();
   const location = useLocation();
+  const { terminalStyle, cycleTerminalStyle } = useTerminalStyle();
+
+  // Индикаторы стилей: цвет, надпись, следующий стиль
+  const styleMap: Record<string, { color: string; label: string; title: string }> = {
+    off:    { color: 'transparent', label: '∅',  title: 'Terminal banner: off → VSCode' },
+    vscode: { color: '#58a6ff',     label: '>_', title: 'Terminal banner: VSCode → Retro' },
+    retro:  { color: '#00cc00',     label: '>_', title: 'Terminal banner: Retro → Matrix' },
+    matrix: { color: '#00ff41',     label: '>_', title: 'Terminal banner: Matrix → off' },
+  };
+  const current = styleMap[terminalStyle];
 
   useEffect(() => {
     const daisy = logicalToDaisyTheme(mode);
@@ -114,6 +125,25 @@ export default function Navbar() {
             )}
 
             {!NO_LANGUAGE_SWITCHER && <LanguageSwitcher />}
+
+            {/* Terminal style switcher: off / vscode / retro / matrix */}
+            <button
+              onClick={cycleTerminalStyle}
+              className="p-2 rounded-lg hover:bg-base-200 transition-all duration-200 flex items-center gap-1"
+              title={current.title}
+            >
+              <span
+                className="font-mono text-[10px] font-bold leading-none px-1 py-0.5 rounded border"
+                style={{
+                  color: terminalStyle === 'off' ? 'currentColor' : current.color,
+                  borderColor: terminalStyle === 'off' ? 'currentColor' : current.color,
+                  opacity: terminalStyle === 'off' ? 0.35 : 1,
+                  boxShadow: terminalStyle !== 'off' ? `0 0 6px ${current.color}55` : 'none',
+                }}
+              >
+                {current.label}
+              </span>
+            </button>
 
             {/* Color scheme toggle: orange / violet */}
             <button

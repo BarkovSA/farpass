@@ -1,6 +1,8 @@
 ﻿import FeaturesSection from '@shared/components/FeaturesSection';
 import HowItWorks from '@shared/components/HowItWorks';
 import HintTooltip from '@shared/components/HintTooltip';
+import FartechBanner from '@shared/components/FartechBanner';
+import { TerminalStyleProvider } from '@shared/context/TerminalStyleContext';
 import CreateSecret from '@features/CreateSecret';
 import { Routes, Route, HashRouter } from 'react-router-dom';
 import { useConfig } from '@shared/hooks/useConfig';
@@ -13,12 +15,15 @@ export default function App() {
   const { DISABLE_UPLOAD, PRIVACY_NOTICE_URL, IMPRINT_URL } = useConfig();
   const { t } = useTranslation();
   return (
+    <TerminalStyleProvider>
     <div className="min-h-screen bg-base-200 flex flex-col">
       <HashRouter>
         <Navbar />
 
         {/* Main Content */}
         <div className="container mx-auto mb-auto px-4 py-8">
+          {/* ASCII-логотип FARTECH (off/vscode/retro/matrix) */}
+          <FartechBanner />
           {/* Схема «Как это работает» — для пользователей */}
           <HowItWorks />
           <div className="card bg-base-100 shadow-xl">
@@ -83,5 +88,6 @@ export default function App() {
         </div>
       </footer>
     </div>
+    </TerminalStyleProvider>
   );
 }
