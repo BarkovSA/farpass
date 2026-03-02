@@ -2,11 +2,12 @@
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { uploadFile } from '@shared/lib/api';
-import { encrypt, createMessage } from 'openpgp';
+import { encryptFile } from '@shared/lib/crypto';
 import { useConfig } from '@shared/hooks/useConfig';
 import { useSecretForm } from '@shared/hooks/useSecretForm';
 import { SecretOptions } from '@shared/components/SecretOptions';
 import Result from '@features/display-secret/Result';
+import EncryptingOverlay from '@shared/components/EncryptingOverlay';
 
 type FormValues = {
   expiration: string;
@@ -21,6 +22,7 @@ export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [encrypting, setEncrypting] = useState(false);
 
   const {
     oneTime,
@@ -66,6 +68,8 @@ export default function Upload() {
       return;
     }
 
+    setEncrypting(true);
+    const MIN_OVERLAY_MS = 2500;
     const pw = getPassword();
     try {
       const reader = new FileReader();
@@ -75,20 +79,20 @@ export default function Upload() {
         reader.readAsArrayBuffer(file);
       });
 
-      const message = await encrypt({
-        format: 'armored',
-        message: await createMessage({
-          binary: new Uint8Array(data),
-          filename: file.name,
-        }),
-        passwords: pw,
-      });
+      const message = await encryptFile(
+        new Uint8Array(data),
+        file.name,
+        pw,
+      );
 
-      const { data: res, status } = await uploadFile({
-        expiration: parseInt(form.expiration),
-        message,
-        one_time: config?.FORCE_ONETIME_SECRETS || oneTime,
-      });
+      const [{ data: res, status }] = await Promise.all([
+        uploadFile({
+          expiration: parseInt(form.expiration),
+          message,
+          one_time: config?.FORCE_ONETIME_SECRETS || oneTime,
+        }),
+        new Promise((r) => setTimeout(r, MIN_OVERLAY_MS)),
+      ]);
 
       if (status !== 200) {
         setError(res.message);
@@ -102,6 +106,8 @@ export default function Upload() {
       });
     } catch (err) {
       setError((err as Error).message);
+    } finally {
+      setEncrypting(false);
     }
   }
 
@@ -119,6 +125,7 @@ export default function Upload() {
 
   return (
     <>
+      <EncryptingOverlay visible={encrypting} />
       <h2 className="text-3xl font-bold mb-4">{t('upload.title')}</h2>
 
       {error && (

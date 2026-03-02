@@ -1,10 +1,124 @@
 ﻿import { useConfig } from '@shared/hooks/useConfig';
 import { useTranslation } from 'react-i18next';
+import { useTerminalTheme } from '@shared/hooks/useTerminalTheme';
+
+// Feature keys for iteration
+const FEATURE_KEYS = [
+  { titleKey: 'features.featureEndToEndTitle', textKey: 'features.featureEndToEndText', icon: 'lock' },
+  { titleKey: 'features.featureSelfDestructionTitle', textKey: 'features.featureSelfDestructionText', icon: 'trash' },
+  { titleKey: 'features.featureOneTimeTitle', textKey: 'features.featureOneTimeText', icon: 'download' },
+  { titleKey: 'features.featureSimpleSharingTitle', textKey: 'features.featureSimpleSharingText', icon: 'share' },
+  { titleKey: 'features.featureNoAccountsTitle', textKey: 'features.featureNoAccountsText', icon: 'users' },
+  { titleKey: 'features.featureOpenSourceTitle', textKey: 'features.featureOpenSourceText', icon: 'code' },
+] as const;
 
 export default function FeaturesSection() {
   const { t } = useTranslation();
   const { DISABLE_FEATURES } = useConfig();
+  const theme = useTerminalTheme();
+
   if (DISABLE_FEATURES) return null;
+
+  // ═══════════════════════════════════════════
+  //  TERMINAL RENDER — 3×2 grid of feature cards
+  // ═══════════════════════════════════════════
+  if (theme) {
+    const icons: Record<string, string> = {
+      lock: '🔒',
+      trash: '💥',
+      download: '↓',
+      share: '🔗',
+      users: '👤',
+      code: '</>',
+    };
+
+    return (
+      <div
+        style={{
+          marginTop: '2rem',
+          marginBottom: '2rem',
+          fontFamily: theme.fontFamily,
+          color: theme.text,
+        }}
+      >
+        <h2
+          style={{
+            textAlign: 'center',
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            marginBottom: '0.5rem',
+            textShadow: theme.headingGlow,
+          }}
+        >
+          {theme.style === 'vscode' && '>_ '}
+          {theme.style === 'retro' && '═══ '}
+          {theme.style === 'matrix' && '// '}
+          {t('features.title')}
+          {theme.style === 'retro' && ' ═══'}
+          {theme.style === 'matrix' && ' //'}
+        </h2>
+        <p
+          style={{
+            textAlign: 'center',
+            color: theme.textSecondary,
+            fontSize: '0.85rem',
+            marginBottom: '1.5rem',
+          }}
+        >
+          {t('features.subtitle')}
+        </p>
+
+        {/* 3×2 grid */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '0.75rem',
+            maxWidth: '900px',
+            margin: '0 auto',
+          }}
+        >
+          {FEATURE_KEYS.map((f) => (
+            <div
+              key={f.titleKey}
+              style={{
+                background: theme.cardBg,
+                border: `1px solid ${theme.border}`,
+                borderRadius: theme.style === 'vscode' ? '6px' : '2px',
+                boxShadow: theme.borderGlow,
+                padding: '0.85rem 1rem',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  color: theme.accent,
+                  marginBottom: '0.35rem',
+                }}
+              >
+                <span style={{ marginRight: '0.4rem' }}>{icons[f.icon] ?? '•'}</span>
+                {t(f.titleKey)}
+              </div>
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  color: theme.textSecondary,
+                  lineHeight: 1.45,
+                }}
+              >
+                {t(f.textKey)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ═══════════════════════════════════════════
+  //  DAISYUI RENDER (off)
+  // ═══════════════════════════════════════════
   return (
     <div className="mt-16 mb-8">
       <div className="text-center mb-12">

@@ -24,3 +24,15 @@ export async function encryptMessage(data: string, passwords: string) {
     passwords,
   });
 }
+
+export async function encryptFile(
+  fileData: Uint8Array,
+  fileName: string,
+  passwords: string,
+) {
+  return encrypt({
+    format: 'armored',
+    message: await createMessage({ binary: fileData, filename: fileName }),
+    passwords,
+  });
+}

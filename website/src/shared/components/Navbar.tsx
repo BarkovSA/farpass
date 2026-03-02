@@ -13,6 +13,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useTerminalStyle } from '../context/TerminalStyleContext';
+import { useTerminalTheme } from '../hooks/useTerminalTheme';
 
 export default function Navbar() {
   const [mode, setMode] = useState<LogicalTheme>(getInitialLogicalTheme);
@@ -21,15 +22,18 @@ export default function Navbar() {
   const { t } = useTranslation();
   const location = useLocation();
   const { terminalStyle, cycleTerminalStyle } = useTerminalStyle();
+  const theme = useTerminalTheme();
 
   // Индикаторы стилей: цвет, надпись, следующий стиль
   const styleMap: Record<string, { color: string; label: string; title: string }> = {
-    off:    { color: 'transparent', label: '∅',  title: 'Terminal banner: off → VSCode' },
-    vscode: { color: '#58a6ff',     label: '>_', title: 'Terminal banner: VSCode → Retro' },
-    retro:  { color: '#00cc00',     label: '>_', title: 'Terminal banner: Retro → Matrix' },
-    matrix: { color: '#00ff41',     label: '>_', title: 'Terminal banner: Matrix → off' },
+    off:    { color: 'transparent', label: '∅',  title: 'Terminal: off → VSCode' },
+    vscode: { color: '#58a6ff',     label: '>_', title: 'Terminal: VSCode → Retro' },
+    retro:  { color: '#00cc00',     label: '>_', title: 'Terminal: Retro → Matrix' },
+    matrix: { color: '#00ff41',     label: '>_', title: 'Terminal: Matrix → off' },
   };
   const current = styleMap[terminalStyle];
+
+  const switchViewLabel = t('header.buttonSwitchView');
 
   useEffect(() => {
     const daisy = logicalToDaisyTheme(mode);
@@ -58,6 +62,184 @@ export default function Navbar() {
     setColorScheme(colorScheme === 'orange' ? 'violet' : 'orange');
   }
 
+  // ─── Common terminal-style toggle button ───
+  const TerminalToggleBtn = () => (
+    <button
+      onClick={cycleTerminalStyle}
+      className={theme ? '' : 'p-2 rounded-lg hover:bg-base-200 transition-all duration-200 flex items-center gap-1'}
+      title={current.title}
+      style={
+        theme
+          ? {
+              padding: '0.35rem 0.5rem',
+              cursor: 'pointer',
+              background: 'transparent',
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+            }
+          : undefined
+      }
+    >
+      <span
+        className="font-mono text-[10px] font-bold leading-none px-1 py-0.5 rounded border"
+        style={{
+          color: terminalStyle === 'off' ? (theme ? theme.text : 'currentColor') : current.color,
+          borderColor: terminalStyle === 'off' ? (theme ? theme.border : 'currentColor') : current.color,
+          opacity: terminalStyle === 'off' ? 0.35 : 1,
+          boxShadow: terminalStyle !== 'off' ? `0 0 6px ${current.color}55` : 'none',
+          fontFamily: theme?.fontFamily,
+        }}
+      >
+        {current.label}
+      </span>
+      <span
+        className="text-xs"
+        style={{
+          fontFamily: theme?.fontFamily ?? undefined,
+          color: theme ? theme.textSecondary : undefined,
+          opacity: theme ? 1 : 0.6,
+        }}
+      >
+        {switchViewLabel}
+      </span>
+    </button>
+  );
+
+  // ═══════════════════════════════════════════
+  //  TERMINAL NAVBAR
+  // ═══════════════════════════════════════════
+  if (theme) {
+    const navBg =
+      theme.style === 'vscode'
+        ? '#161b22'
+        : theme.style === 'retro'
+          ? '#020a02'
+          : 'rgba(0,10,0,0.9)';
+
+    // Left side text
+    const leftContent =
+      theme.style === 'vscode' ? (
+        <a
+          href="/"
+          className="flex items-center gap-2"
+          style={{ color: theme.text, textDecoration: 'none' }}
+        >
+          <img src="/farpass.svg" alt="FarPass logo" className="h-6 w-6" />
+          <span style={{ fontFamily: theme.fontFamily, fontWeight: 600, fontSize: '0.95rem' }}>
+            FarPass
+          </span>
+        </a>
+      ) : theme.style === 'retro' ? (
+        <span
+          style={{
+            fontFamily: theme.fontFamily,
+            color: theme.text,
+            fontSize: '0.8rem',
+            letterSpacing: '0.1em',
+            textShadow: theme.headingGlow,
+          }}
+        >
+          █ FARTECH █ FILE █ EDIT █ HELP █
+        </span>
+      ) : (
+        <span
+          style={{
+            fontFamily: theme.fontFamily,
+            color: theme.accent,
+            fontSize: '0.85rem',
+            textShadow: theme.headingGlow,
+          }}
+        >
+          <span style={{ color: '#00ff00' }}>root</span>
+          <span style={{ color: theme.textSecondary }}>@</span>
+          <span style={{ color: '#00cc00' }}>FARTECH-NODE-01</span>
+          <span style={{ color: theme.textSecondary }}>:~#</span>
+        </span>
+      );
+
+    // Right side status (matrix)
+    const rightStatus =
+      theme.style === 'matrix' ? (
+        <span
+          style={{
+            fontFamily: theme.fontFamily,
+            fontSize: '0.75rem',
+            color: theme.textSecondary,
+          }}
+        >
+          [SECURE][AES-256]
+        </span>
+      ) : null;
+
+    return (
+      <nav
+        style={{
+          background: navBg,
+          borderBottom: `1px solid ${theme.border}`,
+          fontFamily: theme.fontFamily,
+          transition: 'background 0.3s, border-color 0.3s',
+        }}
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-12">
+            <div className="flex items-center gap-3">
+              {leftContent}
+            </div>
+            <div className="flex items-center gap-2">
+              {/* Nav links */}
+              {!DISABLE_UPLOAD && location.pathname === '/upload' ? (
+                <a
+                  href="#/"
+                  style={{
+                    fontFamily: theme.fontFamily,
+                    color: theme.textSecondary,
+                    fontSize: '0.8rem',
+                    textDecoration: 'none',
+                    padding: '0.25rem 0.5rem',
+                    border: `1px solid ${theme.border}`,
+                    borderRadius: theme.style === 'vscode' ? '4px' : '0',
+                  }}
+                >
+                  {t('header.buttonText')}
+                </a>
+              ) : (
+                !DISABLE_UPLOAD && (
+                  <a
+                    href="#/upload"
+                    style={{
+                      fontFamily: theme.fontFamily,
+                      color: theme.textSecondary,
+                      fontSize: '0.8rem',
+                      textDecoration: 'none',
+                      padding: '0.25rem 0.5rem',
+                      border: `1px solid ${theme.border}`,
+                      borderRadius: theme.style === 'vscode' ? '4px' : '0',
+                    }}
+                  >
+                    {t('header.buttonUpload')}
+                  </a>
+                )
+              )}
+
+              {!NO_LANGUAGE_SWITCHER && <LanguageSwitcher />}
+
+              {rightStatus}
+
+              <TerminalToggleBtn />
+
+              {/* We hide color-scheme and dark/light toggle in terminal modes for cleaner UX */}
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
+  // ═══════════════════════════════════════════
+  //  DAISYUI NAVBAR (off)
+  // ═══════════════════════════════════════════
   return (
     <nav className="bg-base-100 border-b border-base-300 shadow-sm">
       <div className="container mx-auto px-4">
@@ -126,25 +308,6 @@ export default function Navbar() {
 
             {!NO_LANGUAGE_SWITCHER && <LanguageSwitcher />}
 
-            {/* Terminal style switcher: off / vscode / retro / matrix */}
-            <button
-              onClick={cycleTerminalStyle}
-              className="p-2 rounded-lg hover:bg-base-200 transition-all duration-200 flex items-center gap-1"
-              title={current.title}
-            >
-              <span
-                className="font-mono text-[10px] font-bold leading-none px-1 py-0.5 rounded border"
-                style={{
-                  color: terminalStyle === 'off' ? 'currentColor' : current.color,
-                  borderColor: terminalStyle === 'off' ? 'currentColor' : current.color,
-                  opacity: terminalStyle === 'off' ? 0.35 : 1,
-                  boxShadow: terminalStyle !== 'off' ? `0 0 6px ${current.color}55` : 'none',
-                }}
-              >
-                {current.label}
-              </span>
-            </button>
-
             {/* Color scheme toggle: orange / violet */}
             <button
               onClick={toggleColorScheme}
@@ -195,6 +358,9 @@ export default function Navbar() {
                 </svg>
               )}
             </button>
+
+            {/* Terminal style switcher — always last (rightmost) */}
+            <TerminalToggleBtn />
           </div>
         </div>
       </div>

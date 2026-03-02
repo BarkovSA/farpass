@@ -1,9 +1,9 @@
 ﻿{
   "create": {
-    "title": "Зашифровать сообщение",
+    "title": "Зашифровать пароль или сообщение",
     "inputSecretLabel": "Ваш секрет",
     "inputSecretPlaceholder": "Введите ваш секрет...",
-    "buttonEncrypt": "Зашифровать",
+    "buttonEncrypt": "Зашифровать текст и символы",
     "inputCustomPasswordLabel": "Собственный пароль",
     "inputCustomPasswordPlaceholder": "Введите пароль...",
     "inputOneTimeLabel": "Одноразовая загрузка",
@@ -110,7 +110,8 @@
     "buttonHome": "Главная",
     "buttonUpload": "Загрузка",
     "buttonText": "Текст",
-    "appName": "FarPass"
+    "appName": "FarPass",
+    "buttonSwitchView": "Сменить вид"
   },
   "common": {
     "copy": "Копировать",

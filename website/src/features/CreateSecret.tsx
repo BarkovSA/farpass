@@ -7,11 +7,18 @@ import { useConfig } from '@shared/hooks/useConfig';
 import { useSecretForm } from '@shared/hooks/useSecretForm';
 import { SecretOptions } from '@shared/components/SecretOptions';
 import Result from '@features/display-secret/Result';
+import { useTerminalTheme } from '@shared/hooks/useTerminalTheme';
+import { TerminalTextarea } from '@shared/components/terminal/TerminalInput';
+import TerminalButton from '@shared/components/terminal/TerminalButton';
+import TerminalLabel from '@shared/components/terminal/TerminalLabel';
+import EncryptingOverlay from '@shared/components/EncryptingOverlay';
 
 export default function CreateSecret() {
   const { t } = useTranslation();
   const config = useConfig();
+  const theme = useTerminalTheme();
   const [secret, setSecret] = useState('');
+  const [encrypting, setEncrypting] = useState(false);
 
   const {
     oneTime,
@@ -44,20 +51,29 @@ export default function CreateSecret() {
     if (!form.secret) {
       return;
     }
-    const pw = getPassword();
-    const { data, status } = await postSecret({
-      expiration: parseInt(form.expiration),
-      message: await encryptMessage(form.secret, pw),
-      one_time: config?.FORCE_ONETIME_SECRETS || oneTime,
-    });
-    if (status !== 200) {
-      setError('secret', { type: 'submit', message: data.message });
-    } else {
-      setResult({
-        password: pw,
-        uuid: data.message,
-        customPassword: isCustomPassword(),
-      });
+    setEncrypting(true);
+    const MIN_OVERLAY_MS = 2500;
+    try {
+      const pw = getPassword();
+      const [{ data, status }] = await Promise.all([
+        postSecret({
+          expiration: parseInt(form.expiration),
+          message: await encryptMessage(form.secret, pw),
+          one_time: config?.FORCE_ONETIME_SECRETS || oneTime,
+        }),
+        new Promise((r) => setTimeout(r, MIN_OVERLAY_MS)),
+      ]);
+      if (status !== 200) {
+        setError('secret', { type: 'submit', message: data.message });
+      } else {
+        setResult({
+          password: pw,
+          uuid: data.message,
+          customPassword: isCustomPassword(),
+        });
+      }
+    } finally {
+      setEncrypting(false);
     }
   }
 
@@ -73,22 +89,67 @@ export default function CreateSecret() {
     );
   }
 
+  // ── Terminal title by style ──
+  const titleText = theme
+    ? theme.style === 'vscode'
+      ? `>_ ${t('create.title')}`
+      : theme.style === 'retro'
+        ? `╔══ ${t('create.title').toUpperCase()} ══╗`
+        : `// ${t('create.title').toUpperCase()} //`
+    : t('create.title');
+
+  // ── Encrypt button label by style ──
+  const btnLabel = theme
+    ? theme.style === 'retro'
+      ? t('create.buttonEncrypt').toUpperCase()
+      : theme.style === 'matrix'
+        ? `EXECUTE ${t('create.buttonEncrypt').toUpperCase()}`
+        : t('create.buttonEncrypt')
+    : t('create.buttonEncrypt');
+
   return (
     <>
-      <h2 className="text-3xl font-bold mb-4">{t('create.title')}</h2>
+      <EncryptingOverlay visible={encrypting} />
+      <h2
+        className={theme ? '' : 'text-3xl font-bold mb-4'}
+        style={
+          theme
+            ? {
+                fontFamily: theme.fontFamily,
+                fontSize: '1.5rem',
+                fontWeight: 700,
+                color: theme.text,
+                textShadow: theme.headingGlow,
+                marginBottom: '1rem',
+              }
+            : undefined
+        }
+      >
+        {titleText}
+      </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {errors.secret && (
-          <div className="mb-4 text-red-600 text-sm font-medium">
+          <div
+            className={theme ? '' : 'mb-4 text-red-600 text-sm font-medium'}
+            style={
+              theme
+                ? {
+                    color: theme.error,
+                    fontFamily: theme.fontFamily,
+                    fontSize: '0.85rem',
+                    marginBottom: '0.75rem',
+                  }
+                : undefined
+            }
+          >
+            {theme && '[ERROR] '}
             {errors.secret.message?.toString()}
           </div>
         )}
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">{t('create.inputSecretLabel')}</span>
-          </label>
-          <textarea
+        <div className={theme ? '' : 'form-control'}>
+          <TerminalLabel>{t('create.inputSecretLabel')}</TerminalLabel>
+          <TerminalTextarea
             {...register('secret')}
-            className="textarea textarea-bordered w-full min-h-[100px] text-base p-4 resize-y focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-base-100"
             value={secret}
             onChange={e => setSecret(e.target.value)}
             placeholder={t('create.inputSecretPlaceholder')}
@@ -106,27 +167,26 @@ export default function CreateSecret() {
           setCustomPassword={setCustomPassword}
         />
 
-        <div className="form-control mt-8">
-          <button
-            className="btn btn-primary w-full h-14 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
-            type="submit"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
-            {t('create.buttonEncrypt')}
-          </button>
+        <div className={theme ? 'mt-8' : 'form-control mt-8'}>
+          <TerminalButton type="submit" variant="primary">
+            {!theme && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+            )}
+            {btnLabel}
+          </TerminalButton>
         </div>
       </form>
     </>

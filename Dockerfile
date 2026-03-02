@@ -19,18 +19,18 @@ RUN CGO_ENABLED=0 GOOS=linux \
     go build -ldflags="-s -w" -o farpass-server ./cmd/farpass-server
 
 # ── Stage 2: Frontend build ────────────────────────────────────────────────────
-# node:22-slim — Debian slim без лишних пакетов (~600 MB экономии в build-стадии)
-FROM node:22-slim AS website
+# oven/bun — быстрый JS-рантайм с встроенным пакетным менеджером
+FROM oven/bun:1 AS website
 
 WORKDIR /website
 
-# Только манифесты — yarn install кэшируется до изменения package.json / yarn.lock
-COPY website/package.json website/yarn.lock ./
-RUN yarn install --frozen-lockfile --network-timeout 600000
+# Только манифесты — bun install кэшируется до изменения package.json / bun.lock
+COPY website/package.json website/bun.lock ./
+RUN bun install --frozen-lockfile
 
 # Исходники — после install, чтобы не инвалидировать кэш зависимостей
 COPY website/ .
-RUN yarn build
+RUN bun run build
 
 # ── Stage 3: Финальный образ (минимальный, без shell и лишних утилит) ──────────
 FROM gcr.io/distroless/base-debian12

@@ -1,9 +1,9 @@
 ﻿{
   "create": {
-    "title": "Encrypt message",
+    "title": "Encrypt password or message",
     "inputSecretLabel": "Your Secret",
     "inputSecretPlaceholder": "Enter your secret...",
-    "buttonEncrypt": "Encrypt Message",
+    "buttonEncrypt": "Encrypt text and symbols",
     "inputCustomPasswordLabel": "Custom Password",
     "inputCustomPasswordPlaceholder": "Enter your password...",
     "inputOneTimeLabel": "One-time download",
@@ -110,7 +110,8 @@
     "buttonHome": "Home",
     "buttonUpload": "Upload",
     "buttonText": "Text",
-    "appName": "FarPass"
+    "appName": "FarPass",
+    "buttonSwitchView": "Switch view"
   },
   "common": {
     "copy": "Copy",

@@ -13,7 +13,7 @@ First of all, thank you for taking the time to contribute to farpass! 🎉
 
 **Frontend Development (React/TypeScript):**
 - Node.js 18+
-- Yarn package manager
+- [Bun](https://bun.sh) runtime & package manager
 - Modern browser for testing
 
 ### Local Development Setup
@@ -36,8 +36,8 @@ First of all, thank you for taking the time to contribute to farpass! 🎉
 3. **Frontend setup:**
    ```bash
    cd website/
-   yarn install
-   yarn dev  # Starts development server on http://localhost:3000
+   bun install
+   bun dev  # Starts development server on http://localhost:3000
    ```
 
 ## Development Workflow
@@ -96,7 +96,7 @@ Testing is mandatory for all contributions. We use a hybrid testing approach:
 cd website/
 
 # Run end-to-end tests
-yarn test
+bun run test
 
 ```
 
@@ -152,7 +152,7 @@ Please report security vulnerabilities privately by emailing the maintainers rat
 ### PR Requirements
 
 - [ ] **Tests included** - All changes must have appropriate tests
-- [ ] **Linting passes** - `yarn lint` (frontend) and `golangci-lint run` (backend)
+- [ ] **Linting passes** - `bun run lint` (frontend) and `golangci-lint run` (backend)
 - [ ] **Tests pass** - Both unit and integration tests
 - [ ] **Documentation updated** - Update relevant docs if needed
 - [ ] **Security reviewed** - Consider security implications of changes

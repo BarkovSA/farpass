@@ -61,9 +61,6 @@ export default function HintTooltip({ disabled = false }: HintTooltipProps) {
   useEffect(() => {
     if (isDebugMode()) {
       setOpen(true);
-      console.info(
-        '[HintTooltip] 🟡 Режим подсказок включён (?hints=true или localStorage farpass_hints=1)',
-      );
     }
   }, []);
 

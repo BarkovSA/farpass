@@ -4,9 +4,13 @@
  *
  * Управление видимостью: пропс `visible` (по умолчанию true).
  * Можно скрыть целиком через конфиг DISABLE_HOW_IT_WORKS, если он появится.
+ *
+ * Terminal styles: vscode — mono numbered list, retro — ASCII arrows,
+ * matrix — coloured status lines.
  */
 
 import { useTranslation } from 'react-i18next';
+import { useTerminalTheme } from '@shared/hooks/useTerminalTheme';
 
 interface Step {
   icon: string;
@@ -61,9 +65,118 @@ interface HowItWorksProps {
 
 export default function HowItWorks({ visible = true }: HowItWorksProps) {
   const { t } = useTranslation();
+  const theme = useTerminalTheme();
 
   if (!visible) return null;
 
+  // ═══════════════════════════════════════════
+  //  TERMINAL RENDER
+  // ═══════════════════════════════════════════
+  if (theme) {
+    const arrow =
+      theme.style === 'retro'
+        ? ' ──> '
+        : theme.style === 'matrix'
+          ? '  →  '
+          : '  →  ';
+
+    return (
+      <div
+        style={{
+          marginTop: '2rem',
+          marginBottom: '1.5rem',
+          fontFamily: theme.fontFamily,
+          color: theme.text,
+        }}
+      >
+        <h2
+          style={{
+            textAlign: 'center',
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            marginBottom: '0.5rem',
+            textShadow: theme.headingGlow,
+            color: theme.text,
+          }}
+        >
+          {theme.style === 'vscode' && '>_ '}
+          {theme.style === 'retro' && '═══ '}
+          {theme.style === 'matrix' && '// '}
+          {t('howItWorks.title')}
+          {theme.style === 'retro' && ' ═══'}
+          {theme.style === 'matrix' && ' //'}
+        </h2>
+        <p
+          style={{
+            textAlign: 'center',
+            color: theme.textSecondary,
+            fontSize: '0.8rem',
+            marginBottom: '1rem',
+          }}
+        >
+          {t('howItWorks.subtitle')}
+        </p>
+
+        {/* Steps as numbered mono list */}
+        <div
+          style={{
+            background: theme.cardBg,
+            border: `1px solid ${theme.border}`,
+            borderRadius: theme.style === 'vscode' ? '6px' : '2px',
+            boxShadow: theme.borderGlow,
+            padding: '1rem 1.25rem',
+            maxWidth: '700px',
+            margin: '0 auto',
+          }}
+        >
+          {STEPS.map((step, idx) => {
+            const num = `${idx + 1}.`;
+            const statusColor =
+              theme.style === 'matrix'
+                ? idx < 3
+                  ? theme.accent
+                  : idx < 5
+                    ? theme.warning
+                    : theme.error
+                : theme.text;
+
+            return (
+              <div key={step.labelKey} className="flex items-start" style={{ marginBottom: idx < STEPS.length - 1 ? '0.35rem' : 0 }}>
+                <span
+                  style={{
+                    color: theme.accent,
+                    fontWeight: 700,
+                    minWidth: '1.5rem',
+                    display: 'inline-block',
+                  }}
+                >
+                  {num}
+                </span>
+                <span style={{ color: statusColor, fontWeight: 600 }}>
+                  {t(step.labelKey)}
+                </span>
+                <span style={{ color: theme.textSecondary, marginLeft: '0.5rem' }}>
+                  — {t(step.descKey)}
+                </span>
+                {idx < STEPS.length - 1 && (
+                  <span
+                    className="hidden sm:inline"
+                    style={{ color: theme.textSecondary, marginLeft: '0.25rem' }}
+                  >
+                    {arrow}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ═══════════════════════════════════════════
+  //  DAISYUI RENDER (off)
+  // ═══════════════════════════════════════════
   return (
     <div className="mt-12 mb-4">
       {/* Заголовок */}

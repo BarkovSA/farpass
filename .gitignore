@@ -5,6 +5,10 @@ website/node_modules
 
 # production
 website/build
+website/dist
+
+# lock files (project uses bun)
+website/yarn.lock
 
 # misc
 .DS_Store

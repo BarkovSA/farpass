@@ -44,3 +44,45 @@
   --color-accent:          oklch(0.68 0.25 293.5);
   --color-accent-content:  oklch(1    0    0);
 }
+
+/* ═══════════════════════════════════════════════════
+   Terminal style global transitions & animations
+   ═══════════════════════════════════════════════════ */
+
+/* Smooth transitions when switching terminal styles */
+body {
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Matrix heading pulse animation */
+@keyframes terminal-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.terminal-heading-pulse {
+  animation: terminal-pulse 2s ease-in-out infinite;
+}
+
+/* Neon glow animation for matrix buttons */
+@keyframes neon-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(0,255,65,0.3); }
+  50% { box-shadow: 0 0 16px rgba(0,255,65,0.6), 0 0 4px rgba(0,255,65,0.3); }
+}
+
+.terminal-neon-glow {
+  animation: neon-glow 2s ease-in-out infinite;
+}
+
+/* CRT flicker for retro (subtle) */
+@keyframes crt-flicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 1; }
+  10% { opacity: 0.98; }
+  15% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.terminal-crt-flicker {
+  animation: crt-flicker 4s linear infinite;
+}
