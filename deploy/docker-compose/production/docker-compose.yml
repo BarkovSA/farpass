@@ -1,0 +1,54 @@
+# ── FarPass production deploy ─────────────────────────────────────────────────
+# Caddy автоматически получает и продлевает Let's Encrypt сертификат.
+# Единственное требование: домен должен указывать A/AAAA-записью на IP сервера,
+# а порты 80 и 443 должны быть открыты.
+#
+# Быстрый старт:
+#   1. Скопировать .env.example → .env и заполнить домен/email
+#   2. docker compose up -d --build
+# ──────────────────────────────────────────────────────────────────────────────
+
+services:
+  # ── Reverse-proxy + auto-TLS ────────────────────────────────────────────────
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"      # HTTP/3 (QUIC)
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data   # сертификаты
+      - caddy_config:/config
+    depends_on:
+      - farpass
+    environment:
+      - DOMAIN=${DOMAIN:-splitmind.ru}
+      - EMAIL=${EMAIL:-admin@splitmind.ru}
+
+  # ── Backend + SPA (статика встроена в образ) ────────────────────────────────
+  farpass:
+    build:
+      context: ../../../
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    expose:
+      - "1337"
+    command: >-
+      --memcached=memcached:11211
+      --port 1337
+    depends_on:
+      - memcached
+
+  # ── In-memory storage ──────────────────────────────────────────────────────
+  memcached:
+    image: memcached:1.6-alpine
+    restart: unless-stopped
+    expose:
+      - "11211"
+    command: memcached -m 128
+
+volumes:
+  caddy_data:
+  caddy_config:

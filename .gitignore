@@ -10,6 +10,9 @@ website/dist
 # lock files (project uses bun)
 website/yarn.lock
 
+# env files
+.env
+
 # misc
 .DS_Store
 .env.local

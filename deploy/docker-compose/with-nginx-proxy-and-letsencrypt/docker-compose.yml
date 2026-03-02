@@ -35,9 +35,9 @@ services:
     image: BarkovSA/farpass
     restart: always
     environment:
-      - VIRTUAL_HOST=subdomain.yourdomain.tld
-      - LETSENCRYPT_HOST=subdomain.yourdomain.tld
-      - LETSENCRYPT_EMAIL=mail@yourdomain.tld
+      - VIRTUAL_HOST=splitmind.ru
+      - LETSENCRYPT_HOST=splitmind.ru
+      - LETSENCRYPT_EMAIL=admin@splitmind.ru
     command: "--memcached=memcached:11211 --port 80"
     expose:
       - "80"

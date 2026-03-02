@@ -1,0 +1,48 @@
+# ── Caddy reverse-proxy config ────────────────────────────────────────────────
+# Caddy автоматически:
+#   • получает TLS-сертификат Let's Encrypt
+#   • перенаправляет HTTP → HTTPS
+#   • включает HTTP/2 и HTTP/3
+#   • продлевает сертификат до истечения
+
+{$DOMAIN:splitmind.ru} {
+	# TLS с указанием email для Let's Encrypt (нужен для уведомлений)
+	tls {$EMAIL:admin@splitmind.ru}
+
+	# Сжатие ответов (gzip + zstd)
+	encode zstd gzip
+
+	# API-запросы → Go-бэкенд
+	handle /secret* {
+		reverse_proxy farpass:1337
+	}
+	handle /file* {
+		reverse_proxy farpass:1337
+	}
+
+	# Health-check endpoint
+	handle /health {
+		reverse_proxy farpass:1337
+	}
+
+	# Статика SPA → Go-бэкенд (он раздаёт /public)
+	handle {
+		reverse_proxy farpass:1337
+	}
+
+	# Security headers
+	header {
+		X-Frame-Options "DENY"
+		X-Content-Type-Options "nosniff"
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy "no-referrer"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+	}
+
+	# Логи запросов
+	log {
+		output stdout
+		format console
+	}
+}
