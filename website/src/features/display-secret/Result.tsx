@@ -201,6 +201,18 @@ function Result({
           )}
         </RetroFrame>
 
+        {/* Create another — right after one-click link */}
+        <div className="flex justify-center" style={{ marginBottom: '1.5rem' }}>
+          <TerminalButton
+            variant="outline"
+            onClick={() => {
+              window.location.href = '/';
+            }}
+          >
+            {t('result.buttonCreateAnother')}
+          </TerminalButton>
+        </div>
+
         {/* One-time warning — below one-click link */}
         {oneTime && (
           <div
@@ -325,16 +337,6 @@ function Result({
           )}
         </div>
 
-        <div className="flex justify-center mt-8">
-          <TerminalButton
-            variant="outline"
-            onClick={() => {
-              window.location.href = '/';
-            }}
-          >
-            {t('result.buttonCreateAnother')}
-          </TerminalButton>
-        </div>
       </div>
     );
   }
@@ -374,6 +376,18 @@ function Result({
           </div>
         </div>
       )}
+
+      {/* Create another — right after one-click link */}
+      <div className="flex justify-center mb-6">
+        <button
+          className="btn btn-outline btn-primary px-8 font-medium shadow-sm hover:shadow transition-all duration-200"
+          onClick={() => {
+            window.location.href = '/';
+          }}
+        >
+          {t('result.buttonCreateAnother')}
+        </button>
+      </div>
 
       {/* One-time warning — below one-click link */}
       {oneTime && (
@@ -476,16 +490,6 @@ function Result({
         )}
       </div>
 
-      <div className="flex justify-center mt-8">
-        <button
-          className="btn btn-outline btn-primary px-8 font-medium shadow-sm hover:shadow transition-all duration-200"
-          onClick={() => {
-            window.location.href = '/';
-          }}
-        >
-          {t('result.buttonCreateAnother')}
-        </button>
-      </div>
     </>
   );
 }

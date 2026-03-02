@@ -7,7 +7,8 @@
     "inputCustomPasswordLabel": "Vlastní heslo",
     "inputCustomPasswordPlaceholder": "Zadejte své heslo...",
     "inputOneTimeLabel": "Jednorázové stažení",
-    "inputGenerateKeyLabel": "Vygenerovat dešifrovací klíč"
+    "inputGenerateKeyLabel": "Vygenerovat dešifrovací klíč",
+    "showAnimationLabel": "Zobrazit animaci šifrování"
   },
   "upload": {
     "title": "Nahrát soubor",
@@ -109,8 +110,8 @@
   },
   "header": {
     "buttonHome": "Domů",
-    "buttonUpload": "Nahrát",
-    "buttonText": "Text",
+    "buttonUpload": "Šifrovat soubor",
+    "buttonText": "Šifrovat text",
     "appName": "FarPass"
   },
   "common": {

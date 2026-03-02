@@ -12,6 +12,10 @@ import { TerminalTextarea } from '@shared/components/terminal/TerminalInput';
 import TerminalButton from '@shared/components/terminal/TerminalButton';
 import TerminalLabel from '@shared/components/terminal/TerminalLabel';
 import EncryptingOverlay from '@shared/components/EncryptingOverlay';
+import {
+  ANIMATION_ENABLED_KEY,
+  getInitialAnimationEnabled,
+} from '@shared/theme/theme';
 
 export default function CreateSecret() {
   const { t } = useTranslation();
@@ -19,6 +23,12 @@ export default function CreateSecret() {
   const theme = useTerminalTheme();
   const [secret, setSecret] = useState('');
   const [encrypting, setEncrypting] = useState(false);
+  const [showAnimation, setShowAnimationState] = useState(getInitialAnimationEnabled);
+
+  const setShowAnimation = (val: boolean) => {
+    setShowAnimationState(val);
+    try { localStorage.setItem(ANIMATION_ENABLED_KEY, String(val)); } catch { void 0; }
+  };
 
   const {
     oneTime,
@@ -51,18 +61,22 @@ export default function CreateSecret() {
     if (!form.secret) {
       return;
     }
-    setEncrypting(true);
-    const MIN_OVERLAY_MS = 2500;
+    if (showAnimation) setEncrypting(true);
+    const MIN_OVERLAY_MS = 5000;
     try {
       const pw = getPassword();
-      const [{ data, status }] = await Promise.all([
+      const promises: Promise<unknown>[] = [
         postSecret({
           expiration: parseInt(form.expiration),
           message: await encryptMessage(form.secret, pw),
           one_time: config?.FORCE_ONETIME_SECRETS || oneTime,
         }),
-        new Promise((r) => setTimeout(r, MIN_OVERLAY_MS)),
-      ]);
+      ];
+      if (showAnimation) {
+        promises.push(new Promise((r) => setTimeout(r, MIN_OVERLAY_MS)));
+      }
+      const [response] = await Promise.all(promises);
+      const { data, status } = response as { data: { message: string }; status: number };
       if (status !== 200) {
         setError('secret', { type: 'submit', message: data.message });
       } else {
@@ -157,17 +171,7 @@ export default function CreateSecret() {
           />
         </div>
 
-        <SecretOptions
-          register={register}
-          oneTime={oneTime}
-          setOneTime={setOneTime}
-          generateKey={generateKey}
-          setGenerateKey={setGenerateKey}
-          customPassword={customPassword}
-          setCustomPassword={setCustomPassword}
-        />
-
-        <div className={theme ? 'mt-8' : 'form-control mt-8'}>
+        <div className={theme ? 'mt-4' : 'form-control mt-4'}>
           <TerminalButton type="submit" variant="primary">
             {!theme && (
               <svg
@@ -188,6 +192,18 @@ export default function CreateSecret() {
             {btnLabel}
           </TerminalButton>
         </div>
+
+        <SecretOptions
+          register={register}
+          oneTime={oneTime}
+          setOneTime={setOneTime}
+          generateKey={generateKey}
+          setGenerateKey={setGenerateKey}
+          customPassword={customPassword}
+          setCustomPassword={setCustomPassword}
+          showAnimation={showAnimation}
+          setShowAnimation={setShowAnimation}
+        />
       </form>
     </>
   );

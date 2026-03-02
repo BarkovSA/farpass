@@ -7,7 +7,8 @@
     "inputCustomPasswordLabel": "Aangepast wachtwoord",
     "inputCustomPasswordPlaceholder": "Voer je wachtwoord in...",
     "inputOneTimeLabel": "Eenmalige download",
-    "inputGenerateKeyLabel": "Genereer ontsleutelingssleutel"
+    "inputGenerateKeyLabel": "Genereer ontsleutelingssleutel",
+    "showAnimationLabel": "Versleutelingsanimatie tonen"
   },
   "upload": {
     "title": "Bestand uploaden",
@@ -109,8 +110,8 @@
   },
   "header": {
     "buttonHome": "Home",
-    "buttonUpload": "Uploaden",
-    "buttonText": "Tekst",
+    "buttonUpload": "Bestand versleutelen",
+    "buttonText": "Tekst versleutelen",
     "appName": "FarPass"
   },
   "common": {

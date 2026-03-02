@@ -7,7 +7,8 @@
     "inputCustomPasswordLabel": "Mot de passe personnalisé",
     "inputCustomPasswordPlaceholder": "Entrez votre mot de passe...",
     "inputOneTimeLabel": "Téléchargeable une seule fois",
-    "inputGenerateKeyLabel": "Générer une clé de déchiffrement"
+    "inputGenerateKeyLabel": "Générer une clé de déchiffrement",
+    "showAnimationLabel": "Afficher l'animation de chiffrement"
   },
   "upload": {
     "title": "Charger un fichier",
@@ -108,8 +109,8 @@
   },
   "header": {
     "buttonHome": "Accueil",
-    "buttonUpload": "Téléverser",
-    "buttonText": "Texte",
+    "buttonUpload": "Chiffrer fichier",
+    "buttonText": "Chiffrer texte",
     "appName": "FarPass"
   },
   "common": {

@@ -108,8 +108,8 @@
   },
   "header": {
     "buttonHome": "Hem",
-    "buttonUpload": "Ladda upp",
-    "buttonText": "Text",
+    "buttonUpload": "Kryptera fil",
+    "buttonText": "Kryptera text",
     "appName": "FarPass"
   },
   "common": {

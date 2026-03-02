@@ -27,8 +27,8 @@ const logo = `
   ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝
 `
 
-const tagline = `  Технический отдел · ОА «Фарпост»
-  FAR remote access  ·  TECH support
+const tagline = `  Технический отдел Фарпост ·
+  remote access  ·  TECH support
 `
 
 const separator = `  ──────────────────────────────────────────────────────────`

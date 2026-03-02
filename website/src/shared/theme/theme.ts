@@ -8,6 +8,7 @@ export const DARK_DAISY_THEME = 'dim';
 export const THEME_STORAGE_KEY = 'themeMode';
 export const COLOR_SCHEME_KEY = 'colorScheme';
 export const TERMINAL_STYLE_KEY = 'terminalStyle';
+export const ANIMATION_ENABLED_KEY = 'encryptAnimation';
 
 export const TERMINAL_STYLES: TerminalStyle[] = ['off', 'vscode', 'retro', 'matrix'];
 
@@ -19,6 +20,16 @@ export function getInitialTerminalStyle(): TerminalStyle {
     void 0;
   }
   return 'vscode';
+}
+
+export function getInitialAnimationEnabled(): boolean {
+  try {
+    const stored = localStorage.getItem(ANIMATION_ENABLED_KEY);
+    if (stored === 'false') return false;
+  } catch {
+    void 0;
+  }
+  return true; // включена по умолчанию
 }
 
 export function getInitialColorScheme(): ColorScheme {

@@ -17,6 +17,8 @@ interface SecretOptionsProps {
   customPassword: string;
   setCustomPassword: (value: string) => void;
   expirationLabel?: string;
+  showAnimation: boolean;
+  setShowAnimation: (value: boolean) => void;
 }
 
 export function SecretOptions({
@@ -28,6 +30,8 @@ export function SecretOptions({
   customPassword,
   setCustomPassword,
   expirationLabel,
+  showAnimation,
+  setShowAnimation,
 }: SecretOptionsProps) {
   const { t } = useTranslation();
   const config = useConfig();
@@ -107,6 +111,11 @@ export function SecretOptions({
             {...register('generateKey')}
             checked={generateKey}
             onChange={() => setGenerateKey(!generateKey)}
+          />
+          <TerminalCheckbox
+            label={t('create.showAnimationLabel')}
+            checked={showAnimation}
+            onChange={() => setShowAnimation(!showAnimation)}
           />
         </div>
 
@@ -196,6 +205,17 @@ export function SecretOptions({
             />
             <span className="label-text font-medium">
               {t('create.inputGenerateKeyLabel')}
+            </span>
+          </label>
+          <label className="cursor-pointer flex items-center space-x-3 p-2 rounded-md hover:bg-base-200 transition-colors">
+            <input
+              type="checkbox"
+              className="checkbox checkbox-primary"
+              checked={showAnimation}
+              onChange={() => setShowAnimation(!showAnimation)}
+            />
+            <span className="label-text font-medium">
+              {t('create.showAnimationLabel')}
             </span>
           </label>
         </div>

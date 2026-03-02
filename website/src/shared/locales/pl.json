@@ -108,8 +108,8 @@
   },
   "header": {
     "buttonHome": "Strona główna",
-    "buttonUpload": "Wgraj",
-    "buttonText": "Tekst",
+    "buttonUpload": "Szyfruj plik",
+    "buttonText": "Szyfruj tekst",
     "appName": "FarPass"
   },
   "common": {

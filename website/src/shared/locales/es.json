@@ -7,7 +7,8 @@
     "inputCustomPasswordLabel": "Contraseña personalizada",
     "inputCustomPasswordPlaceholder": "Contraseña a introducir...",
     "inputOneTimeLabel": "Una sola descarga",
-    "inputGenerateKeyLabel": "Generar clave de desencriptación"
+    "inputGenerateKeyLabel": "Generar clave de desencriptación",
+    "showAnimationLabel": "Mostrar animación de cifrado"
   },
   "upload": {
     "title": "Subir archivo",
@@ -109,8 +110,8 @@
   },
   "header": {
     "buttonHome": "Inicio",
-    "buttonUpload": "Subir archivo",
-    "buttonText": "Texto",
+    "buttonUpload": "Cifrar archivo",
+    "buttonText": "Cifrar texto",
     "appName": "FarPass"
   },
   "common": {

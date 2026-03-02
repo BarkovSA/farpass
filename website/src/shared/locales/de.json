@@ -7,7 +7,8 @@
     "inputCustomPasswordLabel": "Eigenes Passwort",
     "inputCustomPasswordPlaceholder": "Gib dein Passwort ein...",
     "inputOneTimeLabel": "Einmaliger Download",
-    "inputGenerateKeyLabel": "Entschlüsselungsschlüssel generieren"
+    "inputGenerateKeyLabel": "Entschlüsselungsschlüssel generieren",
+    "showAnimationLabel": "Verschlüsselungsanimation anzeigen"
   },
   "upload": {
     "title": "Datei hochladen",
@@ -109,8 +110,8 @@
   },
   "header": {
     "buttonHome": "Startseite",
-    "buttonUpload": "Hochladen",
-    "buttonText": "Text",
+    "buttonUpload": "Datei verschlüsseln",
+    "buttonText": "Text verschlüsseln",
     "appName": "FarPass"
   },
   "common": {

@@ -8,6 +8,10 @@ import { useSecretForm } from '@shared/hooks/useSecretForm';
 import { SecretOptions } from '@shared/components/SecretOptions';
 import Result from '@features/display-secret/Result';
 import EncryptingOverlay from '@shared/components/EncryptingOverlay';
+import {
+  ANIMATION_ENABLED_KEY,
+  getInitialAnimationEnabled,
+} from '@shared/theme/theme';
 
 type FormValues = {
   expiration: string;
@@ -23,6 +27,12 @@ export default function Upload() {
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [encrypting, setEncrypting] = useState(false);
+  const [showAnimation, setShowAnimationState] = useState(getInitialAnimationEnabled);
+
+  const setShowAnimation = (val: boolean) => {
+    setShowAnimationState(val);
+    try { localStorage.setItem(ANIMATION_ENABLED_KEY, String(val)); } catch { void 0; }
+  };
 
   const {
     oneTime,
@@ -68,8 +78,8 @@ export default function Upload() {
       return;
     }
 
-    setEncrypting(true);
-    const MIN_OVERLAY_MS = 2500;
+    if (showAnimation) setEncrypting(true);
+    const MIN_OVERLAY_MS = 5000;
     const pw = getPassword();
     try {
       const reader = new FileReader();
@@ -85,14 +95,18 @@ export default function Upload() {
         pw,
       );
 
-      const [{ data: res, status }] = await Promise.all([
+      const promises: Promise<unknown>[] = [
         uploadFile({
           expiration: parseInt(form.expiration),
           message,
           one_time: config?.FORCE_ONETIME_SECRETS || oneTime,
         }),
-        new Promise((r) => setTimeout(r, MIN_OVERLAY_MS)),
-      ]);
+      ];
+      if (showAnimation) {
+        promises.push(new Promise((r) => setTimeout(r, MIN_OVERLAY_MS)));
+      }
+      const [response] = await Promise.all(promises);
+      const { data: res, status } = response as { data: { message: string }; status: number };
 
       if (status !== 200) {
         setError(res.message);
@@ -189,6 +203,8 @@ export default function Upload() {
           customPassword={customPassword}
           setCustomPassword={setCustomPassword}
           expirationLabel={t('upload.expirationLegendFile')}
+          showAnimation={showAnimation}
+          setShowAnimation={setShowAnimation}
         />
 
         <div className="form-control mt-8">

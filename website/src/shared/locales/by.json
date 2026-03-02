@@ -7,7 +7,8 @@
     "inputCustomPasswordLabel": "Уласны пароль",
     "inputCustomPasswordPlaceholder": "Увядзіце свой пароль...",
     "inputOneTimeLabel": "Аднаразовая загрузка",
-    "inputGenerateKeyLabel": "Згенераваць ключ дэшыфравання"
+    "inputGenerateKeyLabel": "Згенераваць ключ дэшыфравання",
+    "showAnimationLabel": "Паказаць анімацыю шыфравання"
   },
   "upload": {
     "title": "Запампоўка файла",
@@ -109,8 +110,8 @@
   },
   "header": {
     "buttonHome": "Галоўная",
-    "buttonUpload": "Запампаваць",
-    "buttonText": "Тэкст",
+    "buttonUpload": "Зашыфраваць файл",
+    "buttonText": "Зашыфраваць тэкст",
     "appName": "FarPass"
   },
   "common": {

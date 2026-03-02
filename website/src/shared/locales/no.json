@@ -7,7 +7,8 @@
     "inputCustomPasswordLabel": "Egendefinert passord",
     "inputCustomPasswordPlaceholder": "Oppgi passordet ditt...",
     "inputOneTimeLabel": "Kun én nedlasting",
-    "inputGenerateKeyLabel": "Generer dekrypteringsnøkkel"
+    "inputGenerateKeyLabel": "Generer dekrypteringsnøkkel",
+    "showAnimationLabel": "Vis krypteringsanimasjon"
   },
   "upload": {
     "title": "Last opp fil",
@@ -109,8 +110,8 @@
   },
   "header": {
     "buttonHome": "Hjem",
-    "buttonUpload": "Last opp",
-    "buttonText": "Tekst",
+    "buttonUpload": "Krypter fil",
+    "buttonText": "Krypter tekst",
     "appName": "FarPass"
   },
   "common": {
