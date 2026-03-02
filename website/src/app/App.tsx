@@ -1,7 +1,6 @@
 ﻿import FeaturesSection from '@shared/components/FeaturesSection';
 import HowItWorks from '@shared/components/HowItWorks';
 import HintTooltip from '@shared/components/HintTooltip';
-import FartechBanner from '@shared/components/FartechBanner';
 import CreateSecret from '@features/CreateSecret';
 import { Routes, Route, HashRouter } from 'react-router-dom';
 import { useConfig } from '@shared/hooks/useConfig';
@@ -20,8 +19,6 @@ export default function App() {
 
         {/* Main Content */}
         <div className="container mx-auto mb-auto px-4 py-8">
-          {/* ASCII-логотип FARTECH·FARPASS */}
-          <FartechBanner />
           {/* Схема «Как это работает» — для пользователей */}
           <HowItWorks />
           <div className="card bg-base-100 shadow-xl">
