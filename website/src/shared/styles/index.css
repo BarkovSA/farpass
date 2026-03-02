@@ -4,3 +4,43 @@
     emerald --default,
     dim;
 }
+
+/* FarPass brand: orange primary + violet secondary — light theme (emerald) */
+[data-theme="emerald"] {
+  --color-primary:         oklch(0.68 0.22 35.9);
+  --color-primary-content: oklch(1    0    0);
+  --color-secondary:       oklch(0.44 0.22 293.5);
+  --color-secondary-content: oklch(1  0    0);
+  --color-accent:          oklch(0.72 0.20 35.9);
+  --color-accent-content:  oklch(1    0    0);
+}
+
+/* FarPass brand: orange primary + violet secondary — dark theme (dim) */
+[data-theme="dim"] {
+  --color-primary:         oklch(0.74 0.22 35.9);
+  --color-primary-content: oklch(1    0    0);
+  --color-secondary:       oklch(0.58 0.22 293.5);
+  --color-secondary-content: oklch(1  0    0);
+  --color-accent:          oklch(0.78 0.20 35.9);
+  --color-accent-content:  oklch(1    0    0);
+}
+
+/* Violet-first scheme — light */
+[data-color="violet"][data-theme="emerald"] {
+  --color-primary:         oklch(0.50 0.25 293.5);
+  --color-primary-content: oklch(1    0    0);
+  --color-secondary:       oklch(0.68 0.22 35.9);
+  --color-secondary-content: oklch(1  0    0);
+  --color-accent:          oklch(0.55 0.25 293.5);
+  --color-accent-content:  oklch(1    0    0);
+}
+
+/* Violet-first scheme — dark */
+[data-color="violet"][data-theme="dim"] {
+  --color-primary:         oklch(0.64 0.25 293.5);
+  --color-primary-content: oklch(1    0    0);
+  --color-secondary:       oklch(0.74 0.22 35.9);
+  --color-secondary-content: oklch(1  0    0);
+  --color-accent:          oklch(0.68 0.25 293.5);
+  --color-accent-content:  oklch(1    0    0);
+}

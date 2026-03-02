@@ -14,5 +14,12 @@
           : 'light';
     var daisyTheme = mode === 'dark' ? DARK : LIGHT;
     document.documentElement.setAttribute('data-theme', daisyTheme);
+
+    var storedColor = localStorage.getItem('colorScheme');
+    var colorScheme =
+      storedColor === 'orange' || storedColor === 'violet'
+        ? storedColor
+        : 'orange';
+    document.documentElement.setAttribute('data-color', colorScheme);
   } catch (e) {}
 })();

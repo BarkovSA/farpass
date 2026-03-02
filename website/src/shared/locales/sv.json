@@ -1,4 +1,4 @@
-{
+﻿{
   "create": {
     "title": "Kryptera meddelande",
     "inputSecretLabel": "Ditt meddelande",
@@ -92,25 +92,25 @@
   },
   "features": {
     "title": "Dela meddelanden säkert med enkelhet",
-    "subtitle": "Yopass skapades för att minska mängden lösenord i klartext som lagras i e-post och chattkonversationer genom att kryptera och generera en kortlivad länk som bara kan visas en gång.",
+    "subtitle": "FarPass skapades för att minska mängden lösenord i klartext som lagras i e-post och chattkonversationer genom att kryptera och generera en kortlivad länk som bara kan visas en gång.",
     "featureEndToEndTitle": "End-to-end-kryptering",
-    "featureEndToEndText": "Kryptering och dekryptering sker lokalt i webbläsaren. Nyckeln lagras aldrig med yopass.",
+    "featureEndToEndText": "Kryptering och dekryptering sker lokalt i webbläsaren. Nyckeln lagras aldrig med FarPass.",
     "featureSelfDestructionTitle": "Självförstöring",
     "featureSelfDestructionText": "Krypterade meddelanden har en fast livslängd och kommer att tas bort automatiskt efter konfigurerad livslängd.",
     "featureOneTimeTitle": "Endast en nedladdning",
     "featureOneTimeText": "Det krypterade meddelandet kan bara laddas ner en gång vilket minskar risken för att någon kikar på dina hemligheter.",
     "featureSimpleSharingTitle": "Enkel delning",
-    "featureSimpleSharingText": "Yopass genererar en unik direktlänk för den krypterade filen eller meddelandet. Dekrypteringslösenordet kan alternativt skickas separat.",
+    "featureSimpleSharingText": "FarPass genererar en unik direktlänk för den krypterade filen eller meddelandet. Dekrypteringslösenordet kan alternativt skickas separat.",
     "featureNoAccountsTitle": "Inga konton behövs",
     "featureNoAccountsText": "Delning ska vara snabb och enkel; ingen ytterligare information förutom den krypterade hemligheten lagras i databasen.",
     "featureOpenSourceTitle": "Programvara med öppen källkod",
-    "featureOpenSourceText": "Yopass krypteringsmekanism är byggd på programvara med öppen källkod vilket innebär full transparens samt möjlighet att granska och bidra med nya funktioner."
+    "featureOpenSourceText": "FarPass krypteringsmekanism är byggd på programvara med öppen källkod vilket innebär full transparens samt möjlighet att granska och bidra med nya funktioner."
   },
   "header": {
     "buttonHome": "Hem",
     "buttonUpload": "Ladda upp",
     "buttonText": "Text",
-    "appName": "Yopass"
+    "appName": "FarPass"
   },
   "common": {
     "copy": "Kopiera",
@@ -119,6 +119,6 @@
   "footer": {
     "privacyNotice": "Integritetspolicy",
     "imprint": "Impressum",
-    "createdBy": "Skapad av"
+    "createdBy": "Made with love and care for security. Barkov Sergey"
   }
 }

@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import {
   getInitialLogicalTheme,
+  getInitialColorScheme,
   logicalToDaisyTheme,
   THEME_STORAGE_KEY,
+  COLOR_SCHEME_KEY,
   type LogicalTheme,
+  type ColorScheme,
 } from '../theme/theme';
 import { useConfig } from '../hooks/useConfig';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -12,9 +15,11 @@ import { useLocation } from 'react-router-dom';
 
 export default function Navbar() {
   const [mode, setMode] = useState<LogicalTheme>(getInitialLogicalTheme);
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(getInitialColorScheme);
   const { DISABLE_UPLOAD, NO_LANGUAGE_SWITCHER } = useConfig();
   const { t } = useTranslation();
   const location = useLocation();
+
   useEffect(() => {
     const daisy = logicalToDaisyTheme(mode);
     document.documentElement.setAttribute('data-theme', daisy);
@@ -25,8 +30,21 @@ export default function Navbar() {
     }
   }, [mode]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-color', colorScheme);
+    try {
+      localStorage.setItem(COLOR_SCHEME_KEY, colorScheme);
+    } catch {
+      void 0;
+    }
+  }, [colorScheme]);
+
   function toggleTheme() {
     setMode(mode === 'dark' ? 'light' : 'dark');
+  }
+
+  function toggleColorScheme() {
+    setColorScheme(colorScheme === 'orange' ? 'violet' : 'orange');
   }
 
   return (
@@ -40,7 +58,7 @@ export default function Navbar() {
             >
               <img
                 src="/yopass.svg"
-                alt="Yopass logo"
+                alt="FarPass logo"
                 className="h-8 w-8 mr-3"
               />
               {t('header.appName')}
@@ -96,6 +114,24 @@ export default function Navbar() {
             )}
 
             {!NO_LANGUAGE_SWITCHER && <LanguageSwitcher />}
+
+            {/* Color scheme toggle: orange / violet */}
+            <button
+              onClick={toggleColorScheme}
+              className="p-2 rounded-lg hover:bg-base-200 transition-all duration-200"
+              title={colorScheme === 'orange' ? 'Switch to violet scheme' : 'Switch to orange scheme'}
+            >
+              <span className="flex items-center gap-0.5">
+                <span
+                  className="block w-2.5 h-2.5 rounded-full"
+                  style={{ background: colorScheme === 'orange' ? '#FF6B00' : '#7B2FBE', opacity: 1 }}
+                />
+                <span
+                  className="block w-2.5 h-2.5 rounded-full"
+                  style={{ background: colorScheme === 'orange' ? '#7B2FBE' : '#FF6B00', opacity: 0.4 }}
+                />
+              </span>
+            </button>
 
             <button
               onClick={toggleTheme}
