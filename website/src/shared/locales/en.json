@@ -116,6 +116,32 @@
     "copy": "Copy",
     "copied": "Copied!"
   },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Six steps — and the secret is with the recipient while the server holds nothing",
+    "step1Label": "Enter secret",
+    "step1Desc": "Type a message or choose a file",
+    "step2Label": "Encrypt",
+    "step2Desc": "Encrypted right in your browser, the key never leaves",
+    "step3Label": "Get a link",
+    "step3Desc": "Server stores only the encrypted blob",
+    "step4Label": "Share it",
+    "step4Desc": "Send the link through any channel you like",
+    "step5Label": "Opened once",
+    "step5Desc": "Recipient opens the link and reads the secret",
+    "step6Label": "Gone",
+    "step6Desc": "Secret is instantly wiped from the server"
+  },
+  "hints": {
+    "toggleButton": "Show hints",
+    "panelTitle": "Hints",
+    "panelSubtitle": "Where to click?",
+    "step1": "Type your secret into the large text field",
+    "step2": "Choose expiration: when the link will self-destruct",
+    "step3": "Click \"Encrypt\" — the secret is sent to the server",
+    "step4": "Copy the link from the result panel",
+    "step5": "Send the link to the recipient"
+  },
   "footer": {
     "privacyNotice": "Privacy Notice",
     "imprint": "Imprint",

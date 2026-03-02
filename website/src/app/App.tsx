@@ -1,4 +1,6 @@
 ﻿import FeaturesSection from '@shared/components/FeaturesSection';
+import HowItWorks from '@shared/components/HowItWorks';
+import HintTooltip from '@shared/components/HintTooltip';
 import CreateSecret from '@features/CreateSecret';
 import { Routes, Route, HashRouter } from 'react-router-dom';
 import { useConfig } from '@shared/hooks/useConfig';
@@ -17,6 +19,8 @@ export default function App() {
 
         {/* Main Content */}
         <div className="container mx-auto mb-auto px-4 py-8">
+          {/* Схема «Как это работает» — для пользователей */}
+          <HowItWorks />
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <Routes>
@@ -34,6 +38,11 @@ export default function App() {
           </div>
           <FeaturesSection />
         </div>
+
+        {/* Плавающая кнопка с подсказками (где нажимать) */}
+        {/* Файл: website/src/shared/components/HintTooltip.tsx */}
+        {/* Включить debug-режим: добавьте ?hints=true в URL */}
+        <HintTooltip />
       </HashRouter>
       {/* Footer */}
       <footer className="bg-base-100 border-t border-base-300">
