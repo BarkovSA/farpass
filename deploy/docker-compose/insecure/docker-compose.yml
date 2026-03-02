@@ -1,17 +1,20 @@
-﻿version: "3.0"
-
+﻿# docker compose v2+ (поле version устарело и удалено)
 services:
   memcached:
-    image: memcached
-    restart: always
+    image: memcached:1.6-alpine
+    restart: unless-stopped
     expose:
       - "11211"
+    # Ограничиваем аппетиты memcached: 64 MB кэша
+    command: memcached -m 64
 
   farpass:
     build:
       context: ../../../
       dockerfile: Dockerfile
-    restart: always
+    restart: unless-stopped
     ports:
       - "127.0.0.1:80:80"
     command: "--memcached=memcached:11211 --port 80"
+    depends_on:
+      - memcached

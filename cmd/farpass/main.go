@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/BarkovSA/farpass/pkg/banner"
 	"github.com/BarkovSA/farpass/pkg/farpass"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -81,6 +82,7 @@ func init() {
 }
 
 func main() {
+	banner.PrintColored(os.Stderr)
 	if code := parse(os.Args[1:], os.Stderr); code >= 0 {
 		os.Exit(code)
 	}

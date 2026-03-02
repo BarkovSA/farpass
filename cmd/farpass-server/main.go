@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/BarkovSA/farpass/pkg/banner"
 	"github.com/BarkovSA/farpass/pkg/server"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
@@ -58,6 +59,7 @@ func init() {
 }
 
 func main() {
+	banner.PrintColored(os.Stdout)
 	logger := configureZapLogger()
 	db, err := setupDatabase(logger)
 	if err != nil {
