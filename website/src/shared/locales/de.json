@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Erfordert, dass der Entschlüsselungsschlüssel separat geteilt wird",
     "rowLabelDecryptionKey": "Entschlüsselungsschlüssel",
     "rowDecryptionKeyDescription": "Erforderlich, um die Nachricht mit dem Kurzlink zu entschlüsseln",
+    "spoilerToggle": "Kurzlink & Entschlüsselungsschlüssel (separat senden)",
     "buttonCreateAnother": "Ein weiteres Geheimnis erstellen"
   },
   "secret": {

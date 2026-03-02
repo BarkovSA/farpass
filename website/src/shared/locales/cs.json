@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Vyžaduje, aby byl dešifrovací klíč sdílen samostatně",
     "rowLabelDecryptionKey": "Dešifrovací klíč",
     "rowDecryptionKeyDescription": "Potřebný k dešifrování zprávy pomocí krátkého odkazu",
+    "spoilerToggle": "Krátký odkaz a dešifrovací klíč (odešlete zvlášť)",
     "buttonCreateAnother": "Zašifrovat další zprávu"
   },
   "secret": {

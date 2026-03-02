@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Dekrypteringsnøkkelen må deles på en annen måte",
     "rowLabelDecryptionKey": "Dekrypteringsnøkkel",
     "rowDecryptionKeyDescription": "Påkrevet for å dekryptere meldingen med den korte lenken",
+    "spoilerToggle": "Kortlenke og dekrypteringsnøkkel (send separat)",
     "buttonCreateAnother": "Lag en ny hemmelighet"
   },
   "secret": {

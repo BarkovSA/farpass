@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Requiere que la clave de desencriptación se comparta por separado.",
     "rowLabelDecryptionKey": "Clave de desencriptación",
     "rowDecryptionKeyDescription": "Necesaria para descifrar el mensaje con el enlace corto.",
+    "spoilerToggle": "Enlace corto y clave de descifrado (enviar por separado)",
     "buttonCreateAnother": "Crear otro secreto"
   },
   "secret": {

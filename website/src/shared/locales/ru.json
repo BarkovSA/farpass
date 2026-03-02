@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Требует передачи ключа расшифровки отдельно",
     "rowLabelDecryptionKey": "Ключ расшифровки",
     "rowDecryptionKeyDescription": "Необходим для расшифровки сообщения по короткой ссылке",
+    "spoilerToggle": "Короткая ссылка и ключ (отправить раздельно)",
     "buttonCreateAnother": "Создать ещё один секрет"
   },
   "secret": {

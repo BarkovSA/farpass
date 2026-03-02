@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Патрабуе перадачы ключа дэшыфравання асобна",
     "rowLabelDecryptionKey": "Ключ дэшыфравання",
     "rowDecryptionKeyDescription": "Патрабуецца для дэшыфравання паведамлення праз кароткую спасылку",
+    "spoilerToggle": "Кароткая спасылка і ключ дэшыфравання (адпраўляйце асобна)",
     "buttonCreateAnother": "Стварыць яшчэ адзін сакрэт"
   },
   "secret": {

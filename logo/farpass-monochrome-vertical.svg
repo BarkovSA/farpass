@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FarPass Monochrome Logo — Vertical (white silhouette) -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" xml:space="preserve">
+<!-- Shield icon centered -->
+<g transform="translate(38, 10) scale(2)">
+  <path fill="#ffffff" d="M21 2.5L5 9v12c0 9.8 6.8 18.9 16 21.3C30.2 39.9 37 30.8 37 21V9L21 2.5z"/>
+  <path fill="#ffffff" opacity="0.3" d="M21 5.5L8 11v10c0 7.8 5.3 15 13 17.5V5.5z"/>
+  <rect x="14.5" y="21" width="13" height="10" rx="2.5" fill="#222222" opacity="0.9"/>
+  <path d="M17.5 21v-4a3.5 3.5 0 0 1 7 0v4" fill="none" stroke="#222222" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
+  <circle cx="21" cy="25.5" r="2" fill="#ffffff"/>
+  <rect x="20.1" y="25.5" width="1.8" height="3" rx="0.9" fill="#ffffff"/>
+</g>
+
+<!-- "FarPass" text -->
+<text x="80" y="175" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff" letter-spacing="-0.5">
+  FarPass
+</text>
+</svg>

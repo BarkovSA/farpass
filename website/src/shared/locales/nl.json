@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Vereist dat de ontsleutelingssleutel apart wordt gedeeld",
     "rowLabelDecryptionKey": "Ontsleutelingssleutel",
     "rowDecryptionKeyDescription": "Vereist om het bericht met de korte link te ontsleutelen",
+    "spoilerToggle": "Korte link & ontsleutelingssleutel (apart verzenden)",
     "buttonCreateAnother": "Maak een ander geheim"
   },
   "secret": {

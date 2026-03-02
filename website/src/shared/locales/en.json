@@ -60,6 +60,7 @@
     "rowShortLinkDescription": "Requires the decryption key to be shared separately",
     "rowLabelDecryptionKey": "Decryption key",
     "rowDecryptionKeyDescription": "Required to decrypt the message with the short link",
+    "spoilerToggle": "Short link & decryption key (send separately)",
     "buttonCreateAnother": "Create another secret"
   },
   "secret": {

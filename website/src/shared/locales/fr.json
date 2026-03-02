@@ -59,7 +59,8 @@
     "rowLabelShortLink": "Lien",
     "rowShortLinkDescription": "La clé de chiffrement doit être envoyée séparément",
     "rowLabelDecryptionKey": "Clé de déchiffrement",
-    "rowDecryptionKeyDescription": "Nécessaire pour déchiffrer le secret"
+    "rowDecryptionKeyDescription": "Nécessaire pour déchiffrer le secret",
+    "spoilerToggle": "Lien court et clé de déchiffrement (envoyer séparément)"
   },
   "secret": {
     "titleFile": "Fichier téléchargé",

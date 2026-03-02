@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FarPass Logo — Shield with Lock -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 42" xml:space="preserve">
+<defs>
+  <linearGradient id="fp-main" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#FF6B00"/>
+    <stop offset="100%" style="stop-color:#7B2FBE"/>
+  </linearGradient>
+  <linearGradient id="fp-accent" x1="100%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" style="stop-color:#FF8C00"/>
+    <stop offset="100%" style="stop-color:#9B4FDE"/>
+  </linearGradient>
+</defs>
+<!-- Shield shape -->
+<path fill="url(#fp-main)" d="M21 2.5L5 9v12c0 9.8 6.8 18.9 16 21.3C30.2 39.9 37 30.8 37 21V9L21 2.5z"/>
+<!-- Shield highlight -->
+<path fill="url(#fp-accent)" opacity="0.25" d="M21 5.5L8 11v10c0 7.8 5.3 15 13 17.5V5.5z"/>
+<!-- Lock body -->
+<rect x="14.5" y="21" width="13" height="10" rx="2.5" fill="white" opacity="0.95"/>
+<!-- Lock shackle -->
+<path d="M17.5 21v-4a3.5 3.5 0 0 1 7 0v4" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
+<!-- Keyhole dot -->
+<circle cx="21" cy="25.5" r="2" fill="url(#fp-main)"/>
+<!-- Keyhole slot -->
+<rect x="20.1" y="25.5" width="1.8" height="3" rx="0.9" fill="url(#fp-main)"/>
+</svg>
