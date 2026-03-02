@@ -53,15 +53,22 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <a
-              className="flex items-center text-xl font-semibold text-base-content hover:text-primary transition-colors duration-200 px-2 py-1 rounded-lg hover:bg-base-200"
+              className="flex items-center gap-3 px-2 py-1 rounded-lg hover:bg-base-200 transition-colors duration-200"
               href="/"
             >
               <img
                 src="/farpass.svg"
                 alt="FarPass logo"
-                className="h-8 w-8 mr-3"
+                className="h-8 w-8 flex-shrink-0"
               />
-              {t('header.appName')}
+              <div className="flex flex-col leading-tight">
+                <span className="text-xl font-semibold text-base-content hover:text-primary transition-colors duration-200">
+                  {t('header.appName')}
+                </span>
+                <span className="text-[10px] font-mono tracking-widest text-base-content/40 uppercase select-none">
+                  {t('header.tagline')}
+                </span>
+              </div>
             </a>
           </div>
           <div className="flex items-center gap-2">
