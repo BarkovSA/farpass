@@ -1,4 +1,4 @@
-module github.com/jhaals/yopass
+module github.com/BarkovSA/farpass
 
 go 1.24.0
 

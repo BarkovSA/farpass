@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import type { UseFormRegister } from 'react-hook-form';
 import { useConfig } from '@shared/hooks/useConfig';
 

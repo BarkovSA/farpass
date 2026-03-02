@@ -10,7 +10,7 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/jhaals/yopass/pkg/yopass"
+	"github.com/BarkovSA/farpass/pkg/farpass"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -32,7 +32,7 @@ type Server struct {
 // createSecret creates secret
 func (y *Server) createSecret(w http.ResponseWriter, request *http.Request) {
 	decoder := json.NewDecoder(request.Body)
-	var s yopass.Secret
+	var s farpass.Secret
 	if err := decoder.Decode(&s); err != nil {
 		y.Logger.Debug("Unable to decode request", zap.Error(err))
 		http.Error(w, `{"message": "Unable to parse json"}`, http.StatusBadRequest)
@@ -270,7 +270,7 @@ func SecurityHeadersHandler(next http.Handler) http.Handler {
 func newMetricsMiddleware(reg prometheus.Registerer) func(http.Handler) http.Handler {
 	requests := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "yopass_http_requests_total",
+			Name: "FARPASS_http_requests_total",
 			Help: "Total number of requests served by HTTP method, path and response code.",
 		},
 		[]string{"method", "path", "code"},
@@ -279,7 +279,7 @@ func newMetricsMiddleware(reg prometheus.Registerer) func(http.Handler) http.Han
 
 	duration := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "yopass_http_request_duration_seconds",
+			Name:    "FARPASS_http_request_duration_seconds",
 			Help:    "Histogram of HTTP request latencies by method and path.",
 			Buckets: prometheus.DefBuckets,
 		},

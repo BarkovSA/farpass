@@ -6,40 +6,40 @@ import (
 	"os"
 	"strings"
 
-	"github.com/jhaals/yopass/pkg/yopass"
+	"github.com/BarkovSA/farpass/pkg/farpass"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
 const usageTemplate = `
-Yopass - Secure sharing for secrets, passwords and files
+FarPass - Secure sharing for secrets, passwords and files
 
 Flags:
 %s
 
 Settings are read from flags, environment variables, or a config file located at
-~/.config/yopass/defaults.<json,toml,yml,hcl,ini,...> in this order. Environment
-variables have to be prefixed with YOPASS_ and dashes become underscores.
+~/.config/farpass/defaults.<json,toml,yml,hcl,ini,...> in this order. Environment
+variables have to be prefixed with FARPASS_ and dashes become underscores.
 
 Examples:
       # Encrypt and share secret from stdin
-      printf 'secret message' | yopass
+      printf 'secret message' | FarPass
 
       # Encrypt and share secret file
-      yopass --file /path/to/secret.conf
+      FarPass --file /path/to/secret.conf
 
       # Share secret multiple time a whole day
-      cat secret-notes.md | yopass --expiration=1d --one-time=false
+      cat secret-notes.md | FarPass --expiration=1d --one-time=false
 
       # Decrypt secret to stdout
-      yopass --decrypt https://yopass.se/#/...
+      FarPass --decrypt https://farpass.se/#/...
 
 Website: %s
 `
 
 var (
-	defaultAPI = "https://api.yopass.se"
-	defaultURL = "https://yopass.se"
+	defaultAPI = "https://api.farpass.se"
+	defaultURL = "https://farpass.se"
 )
 
 func init() {
@@ -52,28 +52,28 @@ func init() {
 
 	// Config file
 	viper.SetConfigName("defaults")
-	viper.AddConfigPath("$HOME/.config/yopass")
+	viper.AddConfigPath("$HOME/.config/FarPass")
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			fmt.Fprintln(os.Stderr, "Yopass config file invalid:", err)
+			fmt.Fprintln(os.Stderr, "FarPass config file invalid:", err)
 			os.Exit(3)
 		}
 	}
 
 	// Environment variables
-	viper.SetEnvPrefix("yopass")
+	viper.SetEnvPrefix("FarPass")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	viper.AutomaticEnv()
 
 	// Command-line flags
 	pflag.CommandLine = pflag.NewFlagSet(os.Args[0], pflag.ContinueOnError)
-	pflag.String("api", viper.GetString("api"), "Yopass API server location")
+	pflag.String("api", viper.GetString("api"), "FarPass API server location")
 	pflag.String("decrypt", viper.GetString("decrypt"), "Decrypt secret URL")
 	pflag.String("expiration", viper.GetString("expiration"), "Duration after which secret will be deleted [1h, 1d, 1w]")
 	pflag.String("file", viper.GetString("file"), "Read secret from file instead of stdin")
 	pflag.String("key", viper.GetString("key"), "Manual encryption/decryption key")
 	pflag.Bool("one-time", viper.GetBool("one-time"), "One-time download")
-	pflag.String("url", viper.GetString("url"), "Yopass public URL")
+	pflag.String("url", viper.GetString("url"), "FarPass public URL")
 	if err := viper.BindPFlags(pflag.CommandLine); err != nil {
 		fmt.Fprintln(os.Stderr, "Unable to bind flags:", err)
 		os.Exit(3)
@@ -100,12 +100,12 @@ func main() {
 
 func decrypt(out io.Writer) error {
 	if !strings.HasPrefix(viper.GetString("decrypt"), viper.GetString("url")) {
-		return fmt.Errorf("Unconfigured yopass decrypt URL, set --api and --url")
+		return fmt.Errorf("Unconfigured FarPass decrypt URL, set --api and --url")
 	}
 
-	id, key, _, keyOpt, err := yopass.ParseURL(viper.GetString("decrypt"))
+	id, key, _, keyOpt, err := farpass.ParseURL(viper.GetString("decrypt"))
 	if err != nil {
-		return fmt.Errorf("Invalid yopass decrypt URL: %w", err)
+		return fmt.Errorf("Invalid FarPass decrypt URL: %w", err)
 	}
 
 	if keyOpt || key == "" {
@@ -115,17 +115,17 @@ func decrypt(out io.Writer) error {
 		key = viper.GetString("key")
 	}
 
-	msg, err := yopass.Fetch(viper.GetString("api"), id)
+	msg, err := farpass.Fetch(viper.GetString("api"), id)
 	if err != nil {
 		return fmt.Errorf("Failed to fetch secret: %w", err)
 	}
 
-	pt, _, err := yopass.Decrypt(strings.NewReader(msg), key)
+	pt, _, err := farpass.Decrypt(strings.NewReader(msg), key)
 	if err != nil {
 		return fmt.Errorf("Failed to decrypt secret: %w", err)
 	}
 
-	// Note yopass decrypt currently always prints the content to stdout. This
+	// Note FarPass decrypt currently always prints the content to stdout. This
 	// could be changed to create a file, but will need to handle the case that
 	// the file already exists.
 	_, err = fmt.Fprint(out, pt)
@@ -170,12 +170,12 @@ func encrypt(in io.ReadCloser, out io.Writer) error {
 		return fmt.Errorf("Failed to generate encryption key: %w", err)
 	}
 
-	msg, err := yopass.Encrypt(in, key)
+	msg, err := farpass.Encrypt(in, key)
 	if err != nil {
 		return fmt.Errorf("Failed to encrypt secret: %w", err)
 	}
 
-	id, err := yopass.Store(viper.GetString("api"), yopass.Secret{
+	id, err := farpass.Store(viper.GetString("api"), farpass.Secret{
 		Expiration: exp,
 		Message:    msg,
 		OneTime:    viper.GetBool("one-time"),
@@ -185,7 +185,7 @@ func encrypt(in io.ReadCloser, out io.Writer) error {
 	}
 
 	url := viper.GetString("url")
-	_, err = fmt.Fprintln(out, yopass.SecretURL(url, id, key, viper.IsSet("file"), viper.IsSet("key")))
+	_, err = fmt.Fprintln(out, farpass.SecretURL(url, id, key, viper.IsSet("file"), viper.IsSet("key")))
 	return err
 }
 
@@ -193,7 +193,7 @@ func encryptionKey(key string) (string, error) {
 	if key != "" {
 		return key, nil
 	}
-	return yopass.GenerateKey()
+	return farpass.GenerateKey()
 }
 
 func expiration(s string) int32 {

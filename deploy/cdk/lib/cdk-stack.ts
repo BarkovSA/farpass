@@ -1,18 +1,18 @@
-import * as cdk from "aws-cdk-lib";
+﻿import * as cdk from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as apigw from "aws-cdk-lib/aws-apigateway";
 import * as dynamo from "aws-cdk-lib/aws-dynamodb";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import { Construct } from "constructs";
 
-const domainName = "api.yopass.se";
+const domainName = "api.farpass.se";
 
 export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const table = new dynamo.Table(this, "YopassTable", {
-      tableName: "yopass",
+    const table = new dynamo.Table(this, "FarPassTable", {
+      tableName: "farpass",
       partitionKey: { name: "id", type: dynamo.AttributeType.STRING },
       timeToLiveAttribute: "ttl",
       writeCapacity: 10,
@@ -24,14 +24,14 @@ export class CdkStack extends cdk.Stack {
       validation: acm.CertificateValidation.fromDns(),
     });
 
-    const serverLambda = new lambda.Function(this, "Yopass", {
+    const serverLambda = new lambda.Function(this, "farpass", {
       runtime: lambda.Runtime.PROVIDED_AL2,
       handler: "bootstrap",
       code: lambda.Code.fromAsset("deployment.zip"),
       memorySize: 128,
       architecture: lambda.Architecture.ARM_64,
       environment: {
-        TABLE_NAME: "yopass",
+        TABLE_NAME: "farpass",
         MAX_LENGTH: "10000",
       },
     });
@@ -40,9 +40,9 @@ export class CdkStack extends cdk.Stack {
 
     const gateway = new apigw.LambdaRestApi(this, "Gateway", {
       handler: serverLambda,
-      restApiName: "yopass",
+      restApiName: "farpass",
     });
-    gateway.addUsagePlan("yopass-usage-plan", {
+    gateway.addUsagePlan("farpass-usage-plan", {
       quota: { limit: 1000, period: apigw.Period.DAY },
       throttle: { rateLimit: 50, burstLimit: 25 },
     });

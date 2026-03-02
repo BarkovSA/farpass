@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useAsync } from 'react-use';
 import { ConfigContext } from '@shared/hooks/useConfig';
 import { backendDomain } from '@shared/lib/api';
@@ -22,13 +22,13 @@ const defaultConfig: Config = {
 };
 
 type GlobalWithCache = typeof globalThis & {
-  __yopassConfigCache?: Config | null;
-  __yopassConfigPromise?: Promise<Config> | null;
+  __farpassConfigCache?: Config | null;
+  __farpassConfigPromise?: Promise<Config> | null;
 };
 
 const g = globalThis as GlobalWithCache;
-let configCache: Config | null = g.__yopassConfigCache || null;
-let configPromise: Promise<Config> | null = g.__yopassConfigPromise || null;
+let configCache: Config | null = g.__farpassConfigCache || null;
+let configPromise: Promise<Config> | null = g.__farpassConfigPromise || null;
 
 async function loadConfig(): Promise<Config> {
   if (configCache) return configCache;
@@ -56,19 +56,19 @@ async function loadConfig(): Promise<Config> {
         IMPRINT_URL: data.IMPRINT_URL,
       };
       configCache = parsed;
-      g.__yopassConfigCache = parsed;
+      g.__farpassConfigCache = parsed;
       return parsed;
     } catch (err) {
       console.error('Error loading config using default config:', err);
       configCache = defaultConfig;
-      g.__yopassConfigCache = defaultConfig;
+      g.__farpassConfigCache = defaultConfig;
       return defaultConfig;
     } finally {
-      g.__yopassConfigPromise = null;
+      g.__farpassConfigPromise = null;
       configPromise = null;
     }
   })();
-  g.__yopassConfigPromise = configPromise;
+  g.__farpassConfigPromise = configPromise;
   return configPromise;
 }
 

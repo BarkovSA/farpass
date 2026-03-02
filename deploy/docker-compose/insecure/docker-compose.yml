@@ -1,4 +1,4 @@
-version: "3.0"
+﻿version: "3.0"
 
 services:
   memcached:
@@ -7,7 +7,7 @@ services:
     expose:
       - "11211"
 
-  yopass:
+  farpass:
     build:
       context: ../../../
       dockerfile: Dockerfile

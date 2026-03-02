@@ -1,5 +1,5 @@
-export const backendDomain = process.env.YOPASS_BACKEND_URL
-  ? `${process.env.YOPASS_BACKEND_URL}`
+﻿export const backendDomain = process.env.FarPass_BACKEND_URL
+  ? `${process.env.FarPass_BACKEND_URL}`
   : '';
 
 export interface SecretBody {

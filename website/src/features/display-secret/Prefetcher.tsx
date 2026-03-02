@@ -1,4 +1,4 @@
-import { backendDomain } from '@shared/lib/api';
+﻿import { backendDomain } from '@shared/lib/api';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ErrorPage from './ErrorPage';

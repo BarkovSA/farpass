@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { randomString } from '@shared/lib/random';
 
 export interface SecretFormState {

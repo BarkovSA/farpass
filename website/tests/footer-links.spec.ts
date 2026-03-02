@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
 test.describe('Footer Links', () => {
   test('should not show privacy notice or imprint links when not configured', async ({

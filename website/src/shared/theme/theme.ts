@@ -1,4 +1,4 @@
-export type LogicalTheme = 'light' | 'dark';
+﻿export type LogicalTheme = 'light' | 'dark';
 export type ColorScheme = 'orange' | 'violet';
 
 export const LIGHT_DAISY_THEME = 'emerald';

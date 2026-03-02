@@ -1,4 +1,4 @@
-// Type definitions for i18n resources
+﻿// Type definitions for i18n resources
 export interface TranslationResources {
   create: {
     title: string;

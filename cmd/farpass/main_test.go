@@ -15,7 +15,7 @@ func TestCLI(t *testing.T) {
 		t.Skip("skipping CLI integration tests - could not ping demo server")
 	}
 
-	msg := "yopass CLI integration test message"
+	msg := "FarPass CLI integration test message"
 	stdin, err := tempFile(msg)
 	if err != nil {
 		t.Fatal(err)
@@ -95,7 +95,7 @@ func TestCLIFileUpload(t *testing.T) {
 		t.Skip("skipping CLI integration tests - could not ping demo server")
 	}
 
-	msg := "yopass CLI integration test file upload"
+	msg := "FarPass CLI integration test file upload"
 	file, err := tempFile(msg)
 	if err != nil {
 		t.Fatal(err)
@@ -118,7 +118,7 @@ func TestCLIFileUpload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected no decryption error, got %q", err)
 	}
-	// Note yopass decrypt currently always prints the content to stdout. This
+	// Note FarPass decrypt currently always prints the content to stdout. This
 	// could be changed to create a file, but will need to handle the case that
 	// the file already exists.
 	if out.String() != msg {
@@ -127,7 +127,7 @@ func TestCLIFileUpload(t *testing.T) {
 }
 
 func TestDecryptWithoutCustomKey(t *testing.T) {
-	viper.Set("decrypt", "https://yopass.se/#/c/21701b28-fb3f-451d-8a52-3e6c9094e7ea")
+	viper.Set("decrypt", "https://farpass.se/#/c/21701b28-fb3f-451d-8a52-3e6c9094e7ea")
 	err := decrypt(nil)
 	if err == nil {
 		t.Fatal("expected missing key error, got none")
@@ -139,12 +139,12 @@ func TestDecryptWithoutCustomKey(t *testing.T) {
 }
 
 func TestDecryptWithInvalidUrl(t *testing.T) {
-	viper.Set("decrypt", "https://yopass.se")
+	viper.Set("decrypt", "https://farpass.se")
 	err := decrypt(nil)
 	if err == nil {
 		t.Fatal("expected invalid url error, got none")
 	}
-	want := `Invalid yopass decrypt URL: unexpected URL: "https://yopass.se"`
+	want := `Invalid FarPass decrypt URL: unexpected URL: "https://farpass.se"`
 	if err.Error() != want {
 		t.Fatalf("expected %s, got %s", want, err.Error())
 	}
@@ -156,20 +156,20 @@ func TestDecryptWithUnconfiguredUrl(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected unconfigured url error, got none")
 	}
-	want := `Unconfigured yopass decrypt URL, set --api and --url`
+	want := `Unconfigured FarPass decrypt URL, set --api and --url`
 	if err.Error() != want {
 		t.Fatalf("expected %s, got %s", want, err.Error())
 	}
 }
 
 func TestSecretNotFoundError(t *testing.T) {
-	viper.Set("decrypt", "https://yopass.se/#/c/21701b28-fb3f-451d-8a52-3e6c9094e7")
+	viper.Set("decrypt", "https://farpass.se/#/c/21701b28-fb3f-451d-8a52-3e6c9094e7")
 	viper.Set("key", "woo")
 	err := decrypt(nil)
 	if err == nil {
 		t.Fatal("expected error, got none")
 	}
-	want := `Failed to fetch secret: yopass server error: unexpected response 404 Not Found: 404 page not found`
+	want := `Failed to fetch secret: FarPass server error: unexpected response 404 Not Found: 404 page not found`
 	if strings.TrimRight(err.Error(), "\n") != want {
 		t.Fatalf("expected %s, got %s", want, err.Error())
 	}
@@ -225,12 +225,12 @@ func TestCLIParse(t *testing.T) {
 		{
 			args:   []string{"-h"},
 			exit:   0,
-			output: "Yopass - Secure sharing for secrets, passwords and files",
+			output: "FarPass - Secure sharing for secrets, passwords and files",
 		},
 		{
 			args:   []string{"--help"},
 			exit:   0,
-			output: "Yopass - Secure sharing for secrets, passwords and files",
+			output: "FarPass - Secure sharing for secrets, passwords and files",
 		},
 		{
 			args:   []string{"--decrypt"},
@@ -269,7 +269,7 @@ func pingDemoServer() bool {
 }
 
 func tempFile(s string) (*os.File, error) {
-	f, err := os.CreateTemp("", "yopass-")
+	f, err := os.CreateTemp("", "FarPass-")
 	if err != nil {
 		return nil, err
 	}

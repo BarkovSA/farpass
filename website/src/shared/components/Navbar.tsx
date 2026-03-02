@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import {
   getInitialLogicalTheme,
   getInitialColorScheme,
@@ -57,7 +57,7 @@ export default function Navbar() {
               href="/"
             >
               <img
-                src="/yopass.svg"
+                src="/farpass.svg"
                 alt="FarPass logo"
                 className="h-8 w-8 mr-3"
               />

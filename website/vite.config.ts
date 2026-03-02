@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+﻿import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -48,7 +48,7 @@ export default defineConfig({
     'process.env': {
       CI: process.env.CI,
       NODE_ENV: process.env.NODE_ENV,
-      YOPASS_BACKEND_URL: process.env.YOPASS_BACKEND_URL,
+      FarPass_BACKEND_URL: process.env.FarPass_BACKEND_URL,
     },
   },
 });

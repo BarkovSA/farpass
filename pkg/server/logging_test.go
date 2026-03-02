@@ -92,7 +92,7 @@ func TestGetRealClientIP(t *testing.T) {
 func TestHTTPLogFormatter(t *testing.T) {
 	t.Run("Log request with no trusted proxies", func(t *testing.T) {
 		ts := time.Now()
-		request := httptest.NewRequest("GET", "https://yopass.se/", nil)
+		request := httptest.NewRequest("GET", "https://farpass.se/", nil)
 		request.Header.Set("X-Forwarded-For", "203.0.113.10")
 		host, _, _ := net.SplitHostPort(request.RemoteAddr)
 
@@ -132,7 +132,7 @@ func TestHTTPLogFormatter(t *testing.T) {
 			case "method":
 				assert.Equal(t, "GET", f.String)
 			case "uri":
-				assert.Equal(t, "https://yopass.se/", f.String)
+				assert.Equal(t, "https://farpass.se/", f.String)
 			case "protocol":
 				assert.Equal(t, "HTTP/1.1", f.String)
 			case "responseStatus":
@@ -151,7 +151,7 @@ func TestHTTPLogFormatter(t *testing.T) {
 
 	t.Run("Log request with trusted proxy", func(t *testing.T) {
 		ts := time.Now()
-		request := httptest.NewRequest("GET", "https://yopass.se/", nil)
+		request := httptest.NewRequest("GET", "https://farpass.se/", nil)
 		request.RemoteAddr = "192.168.1.100:12345"
 		request.Header.Set("X-Forwarded-For", "203.0.113.10")
 
@@ -190,7 +190,7 @@ func TestHTTPLogFormatter(t *testing.T) {
 			case "method":
 				assert.Equal(t, "GET", f.String)
 			case "uri":
-				assert.Equal(t, "https://yopass.se/", f.String)
+				assert.Equal(t, "https://farpass.se/", f.String)
 			case "protocol":
 				assert.Equal(t, "HTTP/1.1", f.String)
 			case "responseStatus":

@@ -1,4 +1,4 @@
-import { useConfig } from '@shared/hooks/useConfig';
+﻿import { useConfig } from '@shared/hooks/useConfig';
 import { useTranslation } from 'react-i18next';
 
 export default function FeaturesSection() {

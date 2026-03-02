@@ -12,8 +12,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/jhaals/yopass/pkg/server"
-	"github.com/jhaals/yopass/pkg/yopass"
+	"github.com/BarkovSA/farpass/pkg/server"
+	"github.com/BarkovSA/farpass/pkg/farpass"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -56,8 +56,8 @@ func NewDynamo(tableName string) server.Database {
 }
 
 // Get item from dynamo
-func (d *Dynamo) Get(key string) (yopass.Secret, error) {
-	var s yopass.Secret
+func (d *Dynamo) Get(key string) (farpass.Secret, error) {
+	var s farpass.Secret
 	input := &dynamodb.GetItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
@@ -111,7 +111,7 @@ func (d *Dynamo) deleteItem(key string) error {
 }
 
 // Put item in Dynamo
-func (d *Dynamo) Put(key string, secret yopass.Secret) error {
+func (d *Dynamo) Put(key string, secret farpass.Secret) error {
 	input := &dynamodb.PutItemInput{
 		// TABLE GENERATED NAME
 		Item: map[string]*dynamodb.AttributeValue{

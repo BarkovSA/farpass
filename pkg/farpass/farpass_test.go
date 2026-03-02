@@ -1,4 +1,4 @@
-package yopass_test
+package farpass_test
 
 import (
 	"bytes"
@@ -9,13 +9,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jhaals/yopass/pkg/yopass"
+	"github.com/BarkovSA/farpass/pkg/farpass"
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 )
 
 func TestSecretJSON(t *testing.T) {
-	got, err := (&yopass.Secret{Expiration: 3600, Message: "msg", OneTime: true}).ToJSON()
+	got, err := (&FarPass.Secret{Expiration: 3600, Message: "msg", OneTime: true}).ToJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,7 +66,7 @@ dhgGsvKwXJm0kEwGwqj6mJq/j28FSFoP9Et/LtRuEe3Ct06WOrrHQ4v9DC4=
 		{
 			name: "cli encrypted",
 			msg: `-----BEGIN PGP MESSAGE-----
-Comment: https://yopass.se
+Comment: https://FarPass.se
 
 wy4ECQMILuOKAclPM2xgmtofvmWNo5/cfU8W54adSd82wxlrx9dHqfqpvPZnoaWF
 0uAB5FihFdqjbxKcLB3vS5UGETHhL1Hgi+Aj4biL4HPiNPEFqOBC5GYbD5oD7xUW
@@ -79,7 +79,7 @@ Q5FI66ugslngweHlYODQ5IWLpbwMHdiymG7uoIKUusHi1lHUv+Gx0AA=
 		{
 			name: "garbage message",
 			msg:  "----- PGP MESSAGE -----",
-			err:  yopass.ErrInvalidMessage,
+			err:  FarPass.ErrInvalidMessage,
 		},
 		{
 			name: "wrong decryption key",
@@ -93,13 +93,13 @@ sbfqaG/iDbp+qDOc98IagMyPrEqKDxnhVVOraXy5dD9RDsntLso=
 =0vwU
 -----END PGP MESSAGE-----`,
 			key: "wrong",
-			err: yopass.ErrInvalidKey,
+			err: FarPass.ErrInvalidKey,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got, name, err := yopass.Decrypt(strings.NewReader(test.msg), test.key)
+			got, name, err := FarPass.Decrypt(strings.NewReader(test.msg), test.key)
 			if want := test.err; !errors.Is(err, want) {
 				t.Fatalf("expected error %v, got %v", want, err)
 			}
@@ -117,7 +117,7 @@ func TestEncrypt(t *testing.T) {
 	p := "example secret message"
 	k := "4VGynYHxNGcurRgVEQ7RHX"
 
-	c, err := yopass.Encrypt(strings.NewReader(p), k)
+	c, err := FarPass.Encrypt(strings.NewReader(p), k)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -142,8 +142,8 @@ func TestEncrypt(t *testing.T) {
 		t.Fatalf("expected cyphertext to be %q, got %q", p, got)
 	}
 
-	_, err = yopass.Encrypt(strings.NewReader(p), "")
-	if want := yopass.ErrEmptyKey; !errors.Is(err, want) {
+	_, err = FarPass.Encrypt(strings.NewReader(p), "")
+	if want := FarPass.ErrEmptyKey; !errors.Is(err, want) {
 		t.Errorf("expected error %v, got %v", want, err)
 	}
 }
@@ -153,7 +153,7 @@ type invalidFile struct{}
 func (invalidFile) Read(p []byte) (n int, err error) { return 0, fmt.Errorf("Broken I/O") }
 
 func TestEncryptWithInvalidFile(t *testing.T) {
-	_, err := yopass.Encrypt(invalidFile{}, "somekey")
+	_, err := FarPass.Encrypt(invalidFile{}, "somekey")
 	if err == nil {
 		t.Fatal("expected error, got none")
 	}
@@ -191,7 +191,7 @@ func TestEncryptErrorHandling(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := yopass.Encrypt(tt.input, tt.key)
+			_, err := FarPass.Encrypt(tt.input, tt.key)
 			if err == nil {
 				t.Fatal("expected error, got none")
 			}
@@ -207,7 +207,7 @@ func TestGenerateKey(t *testing.T) {
 
 	tests := make(map[string]struct{})
 	for i := 0; i < 10_000; i++ {
-		key, err := yopass.GenerateKey()
+		key, err := FarPass.GenerateKey()
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -233,55 +233,55 @@ func TestSecretURL(t *testing.T) {
 	}{
 		{
 			name: "regular",
-			url:  "https://yopass.se",
+			url:  "https://FarPass.se",
 			id:   "b961103f-5a54-4aae-94b8-dccb903802bc",
 			key:  "X9eSZdgUOXSJ3ft0TXAfWT",
-			want: "https://yopass.se/#/s/b961103f-5a54-4aae-94b8-dccb903802bc/X9eSZdgUOXSJ3ft0TXAfWT",
+			want: "https://FarPass.se/#/s/b961103f-5a54-4aae-94b8-dccb903802bc/X9eSZdgUOXSJ3ft0TXAfWT",
 		},
 		{
 			name: "trailing slash",
-			url:  "https://yopass.se/",
+			url:  "https://FarPass.se/",
 			id:   "b961103f-5a54-4aae-94b8-dccb903802bc",
 			key:  "X9eSZdgUOXSJ3ft0TXAfWT",
-			want: "https://yopass.se/#/s/b961103f-5a54-4aae-94b8-dccb903802bc/X9eSZdgUOXSJ3ft0TXAfWT",
+			want: "https://FarPass.se/#/s/b961103f-5a54-4aae-94b8-dccb903802bc/X9eSZdgUOXSJ3ft0TXAfWT",
 		},
 		{
 			name: "different URL",
-			url:  "https://yopass.company.org",
+			url:  "https://FarPass.company.org",
 			id:   "b961103f-5a54-4aae-94b8-dccb903802bc",
 			key:  "X9eSZdgUOXSJ3ft0TXAfWT",
-			want: "https://yopass.company.org/#/s/b961103f-5a54-4aae-94b8-dccb903802bc/X9eSZdgUOXSJ3ft0TXAfWT",
+			want: "https://FarPass.company.org/#/s/b961103f-5a54-4aae-94b8-dccb903802bc/X9eSZdgUOXSJ3ft0TXAfWT",
 		},
 		{
 			name: "manual key",
-			url:  "https://yopass.se",
+			url:  "https://FarPass.se",
 			id:   "6cb3b277-dadd-47c5-b118-d49824b40e15",
 			key:  "manual-key",
 			kOpt: true,
-			want: "https://yopass.se/#/s/6cb3b277-dadd-47c5-b118-d49824b40e15",
+			want: "https://FarPass.se/#/s/6cb3b277-dadd-47c5-b118-d49824b40e15",
 		},
 		{
 			name: "file upload",
-			url:  "https://yopass.se",
+			url:  "https://FarPass.se",
 			id:   "c680736d-32ff-4e1a-a18f-3a20e6774616",
 			key:  "ZMprbkA78FkEWAbrXKK06y",
 			fOpt: true,
-			want: "https://yopass.se/#/f/c680736d-32ff-4e1a-a18f-3a20e6774616/ZMprbkA78FkEWAbrXKK06y",
+			want: "https://FarPass.se/#/f/c680736d-32ff-4e1a-a18f-3a20e6774616/ZMprbkA78FkEWAbrXKK06y",
 		},
 		{
 			name: "file upload with manual key",
-			url:  "https://yopass.se",
+			url:  "https://FarPass.se",
 			id:   "7a43c54c-6dad-4f98-b422-589021d1ac87",
 			key:  "manual-key",
 			fOpt: true,
 			kOpt: true,
-			want: "https://yopass.se/#/f/7a43c54c-6dad-4f98-b422-589021d1ac87",
+			want: "https://FarPass.se/#/f/7a43c54c-6dad-4f98-b422-589021d1ac87",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			have := yopass.SecretURL(tt.url, tt.id, tt.key, tt.fOpt, tt.kOpt)
+			have := FarPass.SecretURL(tt.url, tt.id, tt.key, tt.fOpt, tt.kOpt)
 			if tt.want != have {
 				t.Errorf("expected %q, got %q", tt.want, have)
 			}
@@ -301,56 +301,56 @@ func TestParseURL(t *testing.T) {
 	}{
 		{
 			name: "regular",
-			url:  "https://yopass.se/#/s/45d405ef-5c52-46c1-86d2-2d270c5b1b19/sLYp6skAIhkUnfUMimVU5O",
+			url:  "https://FarPass.se/#/s/45d405ef-5c52-46c1-86d2-2d270c5b1b19/sLYp6skAIhkUnfUMimVU5O",
 			id:   "45d405ef-5c52-46c1-86d2-2d270c5b1b19",
 			key:  "sLYp6skAIhkUnfUMimVU5O",
 		},
 		{
 			name: "trailing newline",
-			url:  "https://yopass.se/#/s/45d405ef-5c52-46c1-86d2-2d270c5b1b19/sLYp6skAIhkUnfUMimVU5O\n",
+			url:  "https://FarPass.se/#/s/45d405ef-5c52-46c1-86d2-2d270c5b1b19/sLYp6skAIhkUnfUMimVU5O\n",
 			id:   "45d405ef-5c52-46c1-86d2-2d270c5b1b19",
 			key:  "sLYp6skAIhkUnfUMimVU5O",
 		},
 		{
 			name:   "manual key",
-			url:    "https://yopass.se/#/c/2c625fd2-84b5-4a02-a6bf-23a2939eea4f",
+			url:    "https://FarPass.se/#/c/2c625fd2-84b5-4a02-a6bf-23a2939eea4f",
 			id:     "2c625fd2-84b5-4a02-a6bf-23a2939eea4f",
 			keyOpt: true,
 		},
 		{
 			name:    "file upload",
-			url:     "https://yopass.se/#/f/c680736d-32ff-4e1a-a18f-3a20e6774616/ZMprbkA78FkEWAbrXKK06y",
+			url:     "https://FarPass.se/#/f/c680736d-32ff-4e1a-a18f-3a20e6774616/ZMprbkA78FkEWAbrXKK06y",
 			id:      "c680736d-32ff-4e1a-a18f-3a20e6774616",
 			key:     "ZMprbkA78FkEWAbrXKK06y",
 			fileOpt: true,
 		},
 		{
 			name:    "file upload with manual key",
-			url:     "https://yopass.se/#/d/7a43c54c-6dad-4f98-b422-589021d1ac87",
+			url:     "https://FarPass.se/#/d/7a43c54c-6dad-4f98-b422-589021d1ac87",
 			id:      "7a43c54c-6dad-4f98-b422-589021d1ac87",
 			fileOpt: true,
 			keyOpt:  true,
 		},
 		{
 			name: "invalid URL",
-			url:  "invalid://yopass:se/#/d/7a43c54c-6dad-4f98-b422-589021d1ac87",
+			url:  "invalid://FarPass:se/#/d/7a43c54c-6dad-4f98-b422-589021d1ac87",
 			fail: true,
 		},
 		{
 			name: "missing fragment",
-			url:  "https://yopass.se/",
+			url:  "https://FarPass.se/",
 			fail: true,
 		},
 		{
-			name: "invalid yopass type",
-			url:  "https://yopass.se/#/z/7a43c54c-6dad-4f98-b422-589021d1ac87",
+			name: "invalid FarPass type",
+			url:  "https://FarPass.se/#/z/7a43c54c-6dad-4f98-b422-589021d1ac87",
 			fail: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			id, key, fileOpt, keyOpt, err := yopass.ParseURL(tt.url)
+			id, key, fileOpt, keyOpt, err := FarPass.ParseURL(tt.url)
 			if tt.fail && err == nil {
 				t.Fatalf("expected error, got nothing")
 			}

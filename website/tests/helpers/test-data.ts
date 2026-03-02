@@ -1,4 +1,4 @@
-export const testSecrets = {
+﻿export const testSecrets = {
   simple: {
     message: 'This is a test secret message',
     expiration: 3600,

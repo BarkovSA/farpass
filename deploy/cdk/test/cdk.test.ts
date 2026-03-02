@@ -1,8 +1,8 @@
-import * as cdk from "aws-cdk-lib";
+﻿import * as cdk from "aws-cdk-lib";
 import { Template, Match } from "aws-cdk-lib/assertions";
 import * as Cdk from "../lib/cdk-stack";
 
-describe("Yopass CDK Stack", () => {
+describe("farpass CDK Stack", () => {
   let template: Template;
 
   beforeAll(() => {
@@ -14,7 +14,7 @@ describe("Yopass CDK Stack", () => {
   describe("DynamoDB Table", () => {
     test("should create DynamoDB table with correct configuration", () => {
       template.hasResourceProperties("AWS::DynamoDB::Table", {
-        TableName: "yopass",
+        TableName: "farpass",
         AttributeDefinitions: [
           {
             AttributeName: "id",
@@ -55,7 +55,7 @@ describe("Yopass CDK Stack", () => {
         Architectures: ["arm64"],
         Environment: {
           Variables: {
-            TABLE_NAME: "yopass",
+            TABLE_NAME: "farpass",
             MAX_LENGTH: "10000",
           },
         },
@@ -111,7 +111,7 @@ describe("Yopass CDK Stack", () => {
   describe("ACM Certificate", () => {
     test("should create SSL certificate for correct domain", () => {
       template.hasResourceProperties("AWS::CertificateManager::Certificate", {
-        DomainName: "api.yopass.se",
+        DomainName: "api.farpass.se",
         ValidationMethod: "DNS",
       });
     });
@@ -131,7 +131,7 @@ describe("Yopass CDK Stack", () => {
   describe("API Gateway", () => {
     test("should create REST API with correct name", () => {
       template.hasResourceProperties("AWS::ApiGateway::RestApi", {
-        Name: "yopass",
+        Name: "farpass",
       });
     });
 
@@ -178,7 +178,7 @@ describe("Yopass CDK Stack", () => {
 
     test("should create custom domain", () => {
       template.hasResourceProperties("AWS::ApiGateway::DomainName", {
-        DomainName: "api.yopass.se",
+        DomainName: "api.farpass.se",
         EndpointConfiguration: {
           Types: ["REGIONAL"],
         },
@@ -259,7 +259,7 @@ describe("Yopass CDK Stack", () => {
     test("Lambda should have proper dependencies", () => {
       template.hasResource("AWS::Lambda::Function", {
         DependsOn: Match.arrayWith([
-          Match.stringLikeRegexp("YopassServiceRole.*"),
+          Match.stringLikeRegexp("FarPassServiceRole.*"),
         ]),
       });
     });

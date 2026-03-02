@@ -1,4 +1,4 @@
-package yopass
+package farpass
 
 import (
 	"bytes"
@@ -34,7 +34,7 @@ var pgpConfig = &packet.Config{
 }
 
 var pgpHeader = map[string]string{
-	"Comment": "https://yopass.se",
+	"Comment": "https://FarPass.se",
 }
 
 // Secret holds the encrypted message
@@ -50,7 +50,7 @@ func (s *Secret) ToJSON() ([]byte, error) {
 }
 
 // Decrypt reads the provided ciphertext and returns the plaintext decrypted
-// with the given key. The ciphertext format is specified by the yopass
+// with the given key. The ciphertext format is specified by the FarPass
 // frontend, no assumptions about the format should be made.
 func Decrypt(r io.Reader, key string) (content, filename string, err error) {
 	tried := false
@@ -149,7 +149,7 @@ func SecretURL(url, id, key string, fileOpt, manualKeyOpt bool) string {
 	return fmt.Sprintf("%s/#/%s/%s", strings.TrimSuffix(url, "/"), prefix, path)
 }
 
-// ParseURL returns secret ID and key from a regular yopass URL.
+// ParseURL returns secret ID and key from a regular FarPass URL.
 func ParseURL(s string) (id, key string, fileOpt, keyOpt bool, err error) {
 	u, err := url.Parse(strings.TrimSpace(s))
 	if err != nil {

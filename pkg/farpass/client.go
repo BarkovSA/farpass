@@ -1,4 +1,4 @@
-package yopass
+package farpass
 
 import (
 	"bytes"
@@ -12,13 +12,13 @@ import (
 // HTTPClient allows modifying the underlying http.Client.
 var HTTPClient = http.DefaultClient
 
-// ServerError represents a yopass server error.
+// ServerError represents a FarPass server error.
 type ServerError struct {
 	err error
 }
 
 func (e *ServerError) Error() string {
-	return fmt.Sprintf("yopass server error: %s", e.err)
+	return fmt.Sprintf("FarPass server error: %s", e.err)
 }
 
 func (e *ServerError) Unwrap() error {

@@ -1,4 +1,4 @@
-name: Publish Docker image
+﻿name: Publish Docker image
 
 # yamllint disable-line rule:truthy
 on:
@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: jhaals/yopass
+          images: BarkovSA/farpass
           flavor: |
             latest=true
       - name: Build and push Docker image

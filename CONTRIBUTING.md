@@ -1,6 +1,6 @@
-# How to contribute to Yopass
+﻿# How to contribute to farpass
 
-First of all, thank you for taking the time to contribute to Yopass! 🎉
+First of all, thank you for taking the time to contribute to farpass! 🎉
 
 ## Getting Started
 
@@ -20,8 +20,8 @@ First of all, thank you for taking the time to contribute to Yopass! 🎉
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/jhaals/yopass.git
-   cd yopass
+   git clone https://github.com/BarkovSA/farpass.git
+   cd farpass
    ```
 
 2. **Backend setup:**
@@ -30,7 +30,7 @@ First of all, thank you for taking the time to contribute to Yopass! 🎉
    docker run -d -p 6379:6379 redis:alpine
 
    # Run the server
-   go run cmd/yopass-server/main.go --redis=redis://localhost:6379/0
+   go run cmd/farpass-server/main.go --redis=redis://localhost:6379/0
    ```
 
 3. **Frontend setup:**
@@ -227,7 +227,7 @@ The backend uses a clean architecture pattern:
 cmd/               # CLI applications
 pkg/
 ├── server/        # HTTP server and routing
-├── yopass/        # Core business logic
+├── farpass/        # Core business logic
 └── ...           # Other packages
 ```
 
@@ -266,7 +266,7 @@ Look for issues tagged with:
 
 ## I need installation help
 
-Yopass is designed to be easy to deploy:
+farpass is designed to be easy to deploy:
 
 ### Docker Deployment (Recommended)
 ```bash
@@ -279,11 +279,11 @@ docker-compose up -d
 For custom setups, refer to:
 - [README.md](README.md) - Complete installation guide
 - [deploy/](deploy/) - Example configurations
-- [Documentation](https://yopass.se) - Detailed deployment guides
+- [Documentation](https://farpass.se) - Detailed deployment guides
 
 ### Getting Help
-- Check existing [GitHub issues](https://github.com/jhaals/yopass/issues)
-- Read the [documentation](https://yopass.se)
+- Check existing [GitHub issues](https://github.com/BarkovSA/farpass/issues)
+- Read the [documentation](https://farpass.se)
 - Ask questions in GitHub discussions
 
 ## Code of Conduct
@@ -297,8 +297,8 @@ For custom setups, refer to:
 
 - **Project Documentation**: [README.md](README.md)
 - **API Documentation**: Available in the codebase
-- **Issue Tracker**: [GitHub Issues](https://github.com/jhaals/yopass/issues)
+- **Issue Tracker**: [GitHub Issues](https://github.com/BarkovSA/farpass/issues)
 
 ---
 
-Thank you for contributing to Yopass! Your efforts help make secure secret sharing accessible to everyone. 🔐
+Thank you for contributing to farpass! Your efforts help make secure secret sharing accessible to everyone. 🔐

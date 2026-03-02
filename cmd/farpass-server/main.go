@@ -14,7 +14,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jhaals/yopass/pkg/server"
+	"github.com/BarkovSA/farpass/pkg/server"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -78,17 +78,17 @@ func main() {
 		Logger:              logger,
 		TrustedProxies:      viper.GetStringSlice("trusted-proxies"),
 	}
-	yopassSrv := &http.Server{
+	FarPassSrv := &http.Server{
 		Addr:      fmt.Sprintf("%s:%d", viper.GetString("address"), viper.GetInt("port")),
 		Handler:   y.HTTPHandler(),
 		TLSConfig: &tls.Config{MinVersion: tls.VersionTLS12},
 	}
 	go func() {
-		logger.Info("Starting yopass server", zap.String("address", yopassSrv.Addr))
+		logger.Info("Starting FarPass server", zap.String("address", FarPassSrv.Addr))
 		logger.Info("Loading assets from: ", zap.String("asset-path", y.AssetPath))
-		err := listenAndServe(yopassSrv, cert, key)
+		err := listenAndServe(FarPassSrv, cert, key)
 		if !errors.Is(err, http.ErrServerClosed) {
-			logger.Fatal("yopass stopped unexpectedly", zap.Error(err))
+			logger.Fatal("FarPass stopped unexpectedly", zap.Error(err))
 		}
 	}()
 
@@ -98,7 +98,7 @@ func main() {
 	}
 	if port := viper.GetInt("metrics-port"); port > 0 {
 		go func() {
-			logger.Info("Starting yopass metrics server", zap.String("address", metricsServer.Addr))
+			logger.Info("Starting FarPass metrics server", zap.String("address", metricsServer.Addr))
 			err := listenAndServe(metricsServer, cert, key)
 			if !errors.Is(err, http.ErrServerClosed) {
 				logger.Fatal("metrics server stopped unexpectedly", zap.Error(err))
@@ -111,7 +111,7 @@ func main() {
 	logger.Info("Shutting down HTTP server", zap.String("signal", sig.String()))
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
-	if err := yopassSrv.Shutdown(ctx); err != nil {
+	if err := FarPassSrv.Shutdown(ctx); err != nil {
 		logger.Fatal("shutdown error: %s", zap.Error(err))
 	}
 	if port := viper.GetInt("metrics-port"); port > 0 {

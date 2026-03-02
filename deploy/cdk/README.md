@@ -1,4 +1,4 @@
-# CDK configuration for deploying yopass in AWS.
+﻿# CDK configuration for deploying farpass in AWS.
 
 This is __primarily__ for the project itself and needs alterations to be used in your own setup.
 

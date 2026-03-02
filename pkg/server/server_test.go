@@ -11,7 +11,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/jhaals/yopass/pkg/yopass"
+	"github.com/BarkovSA/farpass/pkg/farpass"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/testutil"
 	"github.com/spf13/viper"
@@ -30,10 +30,10 @@ func newTestServer(t *testing.T, db Database, maxLength int, forceOneTime bool) 
 
 type mockDB struct{}
 
-func (db *mockDB) Get(key string) (yopass.Secret, error) {
-	return yopass.Secret{Message: `***ENCRYPTED***`}, nil
+func (db *mockDB) Get(key string) (farpass.Secret, error) {
+	return farpass.Secret{Message: `***ENCRYPTED***`}, nil
 }
-func (db *mockDB) Put(key string, secret yopass.Secret) error {
+func (db *mockDB) Put(key string, secret farpass.Secret) error {
 	return nil
 }
 func (db *mockDB) Delete(key string) (bool, error) {
@@ -48,10 +48,10 @@ func (db *mockDB) Status(key string) (bool, error) {
 
 type brokenDB struct{}
 
-func (db *brokenDB) Get(key string) (yopass.Secret, error) {
-	return yopass.Secret{}, fmt.Errorf("Some error")
+func (db *brokenDB) Get(key string) (farpass.Secret, error) {
+	return farpass.Secret{}, fmt.Errorf("Some error")
 }
-func (db *brokenDB) Put(key string, secret yopass.Secret) error {
+func (db *brokenDB) Put(key string, secret farpass.Secret) error {
 	return fmt.Errorf("Some error")
 }
 func (db *brokenDB) Delete(key string) (bool, error) {
@@ -66,10 +66,10 @@ func (db *brokenDB) Status(key string) (bool, error) {
 
 type mockBrokenDB2 struct{}
 
-func (db *mockBrokenDB2) Get(key string) (yopass.Secret, error) {
-	return yopass.Secret{OneTime: true, Message: "encrypted"}, nil
+func (db *mockBrokenDB2) Get(key string) (farpass.Secret, error) {
+	return farpass.Secret{OneTime: true, Message: "encrypted"}, nil
 }
-func (db *mockBrokenDB2) Put(key string, secret yopass.Secret) error {
+func (db *mockBrokenDB2) Put(key string, secret farpass.Secret) error {
 	return fmt.Errorf("Some error")
 }
 func (db *mockBrokenDB2) Delete(key string) (bool, error) {
@@ -87,14 +87,14 @@ type mockStatusDB struct {
 	exists  bool
 }
 
-func (db *mockStatusDB) Get(key string) (yopass.Secret, error) {
+func (db *mockStatusDB) Get(key string) (farpass.Secret, error) {
 	if !db.exists {
-		return yopass.Secret{}, fmt.Errorf("Secret not found")
+		return farpass.Secret{}, fmt.Errorf("Secret not found")
 	}
-	return yopass.Secret{Message: "test", OneTime: db.oneTime}, nil
+	return farpass.Secret{Message: "test", OneTime: db.oneTime}, nil
 }
 
-func (db *mockStatusDB) Put(key string, secret yopass.Secret) error {
+func (db *mockStatusDB) Put(key string, secret farpass.Secret) error {
 	return nil
 }
 
@@ -120,14 +120,14 @@ type mockErrorDB struct {
 	errorOnStatus bool
 }
 
-func (db *mockErrorDB) Get(key string) (yopass.Secret, error) {
+func (db *mockErrorDB) Get(key string) (farpass.Secret, error) {
 	if db.errorOnGet {
-		return yopass.Secret{}, fmt.Errorf("Database error")
+		return farpass.Secret{}, fmt.Errorf("Database error")
 	}
-	return yopass.Secret{Message: "test"}, nil
+	return farpass.Secret{Message: "test"}, nil
 }
 
-func (db *mockErrorDB) Put(key string, secret yopass.Secret) error {
+func (db *mockErrorDB) Put(key string, secret farpass.Secret) error {
 	if db.errorOnPut {
 		return fmt.Errorf("Database error")
 	}
@@ -224,7 +224,7 @@ sbfqaG/iDbp+qDOc98IagMyPrEqKDxnhVVOraXy5dD9RDsntLso=
 			rr := httptest.NewRecorder()
 			y := newTestServer(t, tc.db, tc.maxLength, false)
 			y.createSecret(rr, req)
-			var s yopass.Secret
+			var s farpass.Secret
 			json.Unmarshal(rr.Body.Bytes(), &s)
 			if tc.output != "" {
 				if s.Message != tc.output {
@@ -291,7 +291,7 @@ sbfqaG/iDbp+qDOc98IagMyPrEqKDxnhVVOraXy5dD9RDsntLso=
 			rr := httptest.NewRecorder()
 			y := newTestServer(t, &mockDB{}, 10000, tc.requireOneTime)
 			y.createSecret(rr, req)
-			var s yopass.Secret
+			var s farpass.Secret
 			json.Unmarshal(rr.Body.Bytes(), &s)
 			if tc.output != "" {
 				if s.Message != tc.output {
@@ -339,7 +339,7 @@ func TestGetSecret(t *testing.T) {
 			if cacheControl != "private, no-cache" {
 				t.Fatalf(`Expected Cache-Control header to be "private, no-cache"; got %s`, cacheControl)
 			}
-			var s yopass.Secret
+			var s farpass.Secret
 			json.Unmarshal(rr.Body.Bytes(), &s)
 			if s.Message != tc.output {
 				t.Fatalf(`Expected body "%s"; got "%s"`, tc.output, s.Message)
@@ -426,7 +426,7 @@ func TestMetrics(t *testing.T) {
 		h.ServeHTTP(rr, req)
 	}
 
-	metrics := []string{"yopass_http_requests_total", "yopass_http_request_duration_seconds"}
+	metrics := []string{"FARPASS_http_requests_total", "FARPASS_http_request_duration_seconds"}
 	n, err := testutil.GatherAndCount(y.Registry, metrics...)
 	if err != nil {
 		t.Fatal(err)
@@ -436,12 +436,12 @@ func TestMetrics(t *testing.T) {
 	}
 
 	output := `
-# HELP yopass_http_requests_total Total number of requests served by HTTP method, path and response code.
-# TYPE yopass_http_requests_total counter
-yopass_http_requests_total{code="200",method="GET",path="/secret/:key"} 1
-yopass_http_requests_total{code="404",method="GET",path="/"} 1
+# HELP FARPASS_http_requests_total Total number of requests served by HTTP method, path and response code.
+# TYPE FARPASS_http_requests_total counter
+FARPASS_http_requests_total{code="200",method="GET",path="/secret/:key"} 1
+FARPASS_http_requests_total{code="404",method="GET",path="/"} 1
 `
-	err = testutil.GatherAndCompare(y.Registry, strings.NewReader(output), "yopass_http_requests_total")
+	err = testutil.GatherAndCompare(y.Registry, strings.NewReader(output), "FARPASS_http_requests_total")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -908,7 +908,7 @@ func TestHTTPHandlerWithConfiguration(t *testing.T) {
 }
 
 func TestGetSecretWithToJSONError(t *testing.T) {
-	// This test is challenging since we can't easily mock yopass.Secret.ToJSON()
+	// This test is challenging since we can't easily mock farpass.Secret.ToJSON()
 	// The ToJSON method would need to return an error, which happens very rarely
 	// in practice (only if json.Marshal fails on a simple struct)
 	// We'll test the happy path that's already covered
@@ -1091,7 +1091,7 @@ sbfqaG/iDbp+qDOc98IagMyPrEqKDxnhVVOraXy5dD9RDsntLso=
 		{
 			name:     "valid CLI encrypted PGP message",
 			content: `-----BEGIN PGP MESSAGE-----
-Comment: https://yopass.se
+Comment: https://farpass.se
 
 wy4ECQMILuOKAclPM2xgmtofvmWNo5/cfU8W54adSd82wxlrx9dHqfqpvPZnoaWF
 0uAB5FihFdqjbxKcLB3vS5UGETHhL1Hgi+Aj4biL4HPiNPEFqOBC5GYbD5oD7xUW

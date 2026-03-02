@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/bradfitz/gomemcache/memcache"
-	"github.com/jhaals/yopass/pkg/yopass"
+	"github.com/BarkovSA/farpass/pkg/farpass"
 )
 
 // NewMemcached returns a new memcached database client
@@ -26,7 +26,7 @@ func (m *Memcached) Status(key string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	var s yopass.Secret
+	var s farpass.Secret
 	if err := json.Unmarshal(r.Value, &s); err != nil {
 		return false, err
 	}
@@ -34,8 +34,8 @@ func (m *Memcached) Status(key string) (bool, error) {
 }
 
 // Get key in memcached
-func (m *Memcached) Get(key string) (yopass.Secret, error) {
-	var s yopass.Secret
+func (m *Memcached) Get(key string) (farpass.Secret, error) {
+	var s farpass.Secret
 
 	r, err := m.Client.Get(key)
 	if err != nil {
@@ -56,7 +56,7 @@ func (m *Memcached) Get(key string) (yopass.Secret, error) {
 }
 
 // Put key in Memcached
-func (m *Memcached) Put(key string, secret yopass.Secret) error {
+func (m *Memcached) Put(key string, secret farpass.Secret) error {
 	data, err := secret.ToJSON()
 	if err != nil {
 		return err

@@ -1,10 +1,10 @@
-# Security Policy
+﻿# Security Policy
 
-I take the security of Yopass seriously. If you believe you have discovered a security vulnerability in Yopass, I encourage you to report it responsibly.
+I take the security of farpass seriously. If you believe you have discovered a security vulnerability in farpass, I encourage you to report it responsibly.
 
 ## Security Architecture Overview
 
-Yopass is designed with security as the primary focus:
+farpass is designed with security as the primary focus:
 
 ### Core Security Principles
 
@@ -53,7 +53,7 @@ When you report a security vulnerability:
 
 ### Security Bounty
 
-While Yopass doesn't currently have a formal bug bounty program, I deeply appreciate security research efforts and will acknowledge your contribution in the project
+While farpass doesn't currently have a formal bug bounty program, I deeply appreciate security research efforts and will acknowledge your contribution in the project
 
 ## What Qualifies as a Security Issue
 
@@ -93,9 +93,9 @@ I do not consider the following to be security issues:
 
 ### For Administrators
 
-- **HTTPS Only**: Always deploy Yopass with HTTPS/TLS encryption
+- **HTTPS Only**: Always deploy farpass with HTTPS/TLS encryption
 - **Security Headers**: Configure proper security headers (CSP, HSTS, etc.)
-- **Regular Updates**: Keep Yopass and dependencies updated
+- **Regular Updates**: Keep farpass and dependencies updated
 - **Monitor Logs**: Implement proper logging and monitoring
 - **Access Controls**: Restrict administrative access appropriately
 - **Backup Security**: Ensure backup systems don't contain secrets
@@ -115,4 +115,4 @@ For urgent security issues, please include "SECURITY" in the email subject line.
 
 ---
 
-I appreciate your efforts in keeping Yopass secure for everyone. Your responsible disclosure helps maintain the security and privacy that users depend on.
+I appreciate your efforts in keeping farpass secure for everyone. Your responsible disclosure helps maintain the security and privacy that users depend on.

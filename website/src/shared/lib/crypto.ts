@@ -1,4 +1,4 @@
-import {
+﻿import {
   encrypt,
   decrypt,
   readMessage,

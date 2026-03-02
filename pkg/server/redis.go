@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v7"
-	"github.com/jhaals/yopass/pkg/yopass"
+	"github.com/BarkovSA/farpass/pkg/farpass"
 )
 
 // NewRedis returns a new Redis database client
@@ -33,7 +33,7 @@ func (r *Redis) Status(key string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	var s yopass.Secret
+	var s farpass.Secret
 	if err := json.Unmarshal([]byte(v), &s); err != nil {
 		return false, err
 	}
@@ -41,8 +41,8 @@ func (r *Redis) Status(key string) (bool, error) {
 }
 
 // Get key from Redis
-func (r *Redis) Get(key string) (yopass.Secret, error) {
-	var s yopass.Secret
+func (r *Redis) Get(key string) (farpass.Secret, error) {
+	var s farpass.Secret
 	v, err := r.client.Get(key).Result()
 	if err != nil {
 		return s, err
@@ -62,7 +62,7 @@ func (r *Redis) Get(key string) (yopass.Secret, error) {
 }
 
 // Put key to Redis
-func (r *Redis) Put(key string, secret yopass.Secret) error {
+func (r *Redis) Put(key string, secret farpass.Secret) error {
 	data, err := secret.ToJSON()
 	if err != nil {
 		return err

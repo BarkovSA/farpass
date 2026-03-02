@@ -1,4 +1,4 @@
-import { readMessage } from 'openpgp';
+﻿import { readMessage } from 'openpgp';
 import { decrypt } from 'openpgp';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

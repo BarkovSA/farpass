@@ -1,4 +1,4 @@
-name: "CodeQL"
+﻿name: "CodeQL"
 
 # yamllint disable-line rule:truthy
 on:

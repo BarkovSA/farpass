@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jhaals/yopass/pkg/server"
+	"github.com/BarkovSA/farpass/pkg/server"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -362,7 +362,7 @@ func TestMain(t *testing.T) {
 	defer func() { os.Args = oldArgs }()
 
 	// Set test arguments
-	os.Args = []string{"yopass-server", "--port", "0", "--database", "memcached"}
+	os.Args = []string{"FarPass-server", "--port", "0", "--database", "memcached"}
 
 	// Reset viper for clean test
 	viper.Reset()
@@ -422,7 +422,7 @@ func TestMainWithMetrics(t *testing.T) {
 	listener.Close()
 
 	// Set test arguments
-	os.Args = []string{"yopass-server", "--port", "0", "--metrics-port", portStr, "--database", "memcached"}
+	os.Args = []string{"FarPass-server", "--port", "0", "--metrics-port", portStr, "--database", "memcached"}
 
 	// Reset viper for clean test
 	viper.Reset()
