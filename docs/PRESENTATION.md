@@ -1,3 +1,5 @@
+![FarPass](../logo/farpass-horizontal.svg)
+
 # 📊 FarPass — Презентация для руководства
 
 ## Зачем нам FarPass?

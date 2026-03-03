@@ -1,4 +1,4 @@
-﻿![farpass-horizontal](https://user-images.githubusercontent.com/37777956/59544367-0867aa80-8f09-11e9-8d6a-02008e1bccc7.png)
+﻿![FarPass](logo/farpass-horizontal.svg)
 
 # farpass - Share Secrets Securely
 
