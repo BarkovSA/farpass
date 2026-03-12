@@ -1,118 +1,102 @@
-﻿# Security Policy
+﻿## Политика безопасности
 
-I take the security of farpass seriously. If you believe you have discovered a security vulnerability in farpass, I encourage you to report it responsibly.
+Безопасность FarPass — приоритет. Если вы нашли уязвимость, пожалуйста, сообщите о ней ответственно.
 
-## Security Architecture Overview
+## Кратко об архитектуре безопасности
 
-farpass is designed with security as the primary focus:
+FarPass спроектирован с нулевой допущенной информацией (zero-knowledge): шифрование происходит в браузере, сервер хранит только зашифрованные данные.
 
-### Core Security Principles
+Основные принципы:
 
-- **Zero-Knowledge Architecture**: Secrets are encrypted client-side before transmission
-- **End-to-End Encryption**: Uses OpenPGP encryption with strong cryptographic standards
-- **One-Time Access**: Configurable one-time secret viewing to prevent replay attacks
-- **Minimal Data Retention**: Secrets automatically expire and are permanently deleted
-- **No Plain Text Storage**: Server never has access to unencrypted secrets
+- Zero-knowledge: ключи не отправляются на сервер
+- End-to-end шифрование: OpenPGP/AES-256
+- Одноразовый доступ: секреты можно настроить на одноразовое чтение
+- Минимальное хранение: данные удаляются после TTL
+- На сервере нет открытого текста секретов
 
-### Security Features
+Основные меры безопасности:
 
-- **Client-Side Encryption**: All encryption/decryption happens in the browser
-- **Cryptographically Secure Random Generation**: Uses `window.crypto.getRandomValues()`
-- **Configurable Expiration**: Time-based secret expiration (1 hour to 1 week)
-- **Access Controls**: One-time viewing enforcement
-- **Secure Headers**: Proper Content Security Policy and security headers
-- **Input Validation**: Comprehensive input validation and sanitization
-- **Memory Safety**: Streaming uploads for large files to prevent memory exhaustion
+- Клиентское шифрование (в браузере)
+- Криптографически стойкое генерирование случайных чисел (`window.crypto.getRandomValues()`)
+- Конфигурируемый TTL (от 1 часа до 1 недели)
+- Защита одноразового просмотра
+- Корректные заголовки безопасности (CSP и прочие)
+- Валидация и санитизация входных данных
+- Стриминг загрузок для больших файлов (чтобы избежать OOM)
 
-## Security Vulnerability Disclosure
+## Как сообщить об уязвимости
 
-### Reporting Security Issues
+Пожалуйста, следуйте этим рекомендациям:
 
-Please follow these guidelines when reporting a security issue:
+1. Напишите на почту johan{a}haals.se — не создавайте публичный issue
+2. Укажите максимально подробную информацию:
+   - описание уязвимости
+   - шаги для воспроизведения
+   - оценка потенциального влияния
+   - затронутые версии (если известно)
+   - возможные способы исправления
+   - контакты для связи
+3. Дайте разумное время на ответ и исправление — мы постараемся откликнуться быстро.
 
-1. **Email the report to johan{a}haals.se** - Please do not create a public GitHub issue
-2. **Include detailed information**:
-   - Description of the vulnerability
-   - Steps to reproduce the issue
-   - Potential impact assessment
-   - Affected versions (if known)
-   - Suggested mitigations or remediations
-   - Your contact information for follow-up
+Процесс обработки сообщения:
 
-3. **Allow reasonable response time** - I will do my best to respond promptly
+1. Подтверждение получения
+2. Проверка и валидация
+3. Разработка фикса и тестирование
+4. Согласование времени раскрытия с исследователем
+5. Указание авторства/благодарности (если вы не против)
 
-### Response Process
+Мы пока не предлагаем формальную программу баунти, но ценим вклад исследователей и благодарим в релизных заметках.
 
-When you report a security vulnerability:
+## Что считается уязвимостью
 
-1. **Acknowledgment**: I will acknowledge receipt
-2. **Investigation**: I will investigate and validate the reported issue
-3. **Resolution**: I will develop and test a fix
-4. **Disclosure**: I will coordinate disclosure timing with you
-5. **Credit**: I will acknowledge your contribution in security advisories (unless you prefer to remain anonymous)
+Критичные примеры:
 
-### Security Bounty
+- обход аутентификации/авторизации
+- удалённое выполнение кода на сервере
+- XSS/CSRF в приложении
+- ошибки в криптографии
+- утечка данных
+- эскалация привилегий
+- DoS-атаки
+- раскрытие информации сверх заявленного
 
-While farpass doesn't currently have a formal bug bounty program, I deeply appreciate security research efforts and will acknowledge your contribution in the project
+Не считаются проблемами (по дизайну):
 
-## What Qualifies as a Security Issue
+- подбор UUID/ключей (brute-force)
+- хранение URL в истории браузера
+- уязвимости только в билд-зависимостях, не эксплуатируемые в рантайме
+- социальная инженерия или физический доступ
+- отсутствие rate-limiting (рекомендуется, но не считается уязвимостью)
 
-### Valid Security Issues
+## Рекомендации для пользователей и администраторов
 
-- **Authentication/Authorization bypasses**
-- **Server-side code execution vulnerabilities**
-- **Client-side code injection (XSS, CSRF)**
-- **Cryptographic implementation flaws**
-- **Data exposure vulnerabilities**
-- **Privilege escalation issues**
-- **Denial of service attacks**
-- **Information disclosure beyond intended design**
+Для пользователей:
 
-### Security Issues NOT in Scope
+- Используйте надёжные пароли
+- Проверяйте получателей перед отправкой
+- Включайте одноразовый режим для особо важных секретов
+- Используйте минимально возможное время жизни
+- Делитесь ссылками по защищённым каналам
+- Очищайте историю/кэш после важных операций
 
-I do not consider the following to be security issues:
+Для администраторов:
 
-- **UUID/Key Enumeration**: Brute-force attacks against UUIDs or encryption keys
-- **Browser History/Cache**: URLs being stored in browser history or cache (by design)
-- **Build Dependencies**: Vulnerabilities in build-time dependencies not exploitable at runtime
-- **Social Engineering**: Issues requiring social engineering or physical access
-- **Rate Limiting**: Absence of rate limiting
-- **Information Disclosure**: Version information or technology stack disclosure
-- **Client-Side Storage**: Temporary storage of encrypted data in browser storage
+- Деплойте только по HTTPS
+- Настройте заголовки безопасности (CSP, HSTS и т.д.)
+- Обновляйте зависимости
+- Настройте мониторинг и логирование (без логирования содержимого)
+- Ограничьте доступ к административным интерфейсам
+- Проверьте, что бэкапы не содержат секретов
 
-## Security Best Practices for Users
+## Контакты
 
-### For End Users
+Security contact: johan{a}haals.se
 
-- **Use Strong Passwords**: When creating custom passwords, use strong, unique passwords
-- **Verify Recipients**: Ensure you're sharing secrets with intended recipients only
-- **Use One-Time Secrets**: Enable one-time viewing for sensitive information
-- **Short Expiration**: Use the shortest practical expiration time
-- **Secure Channels**: Share secret URLs through secure communication channels
-- **Clear Browser Data**: Clear browser history/cache after accessing secrets
+Для срочных сообщений укажите в теме письма "SECURITY".
 
-### For Administrators
-
-- **HTTPS Only**: Always deploy farpass with HTTPS/TLS encryption
-- **Security Headers**: Configure proper security headers (CSP, HSTS, etc.)
-- **Regular Updates**: Keep farpass and dependencies updated
-- **Monitor Logs**: Implement proper logging and monitoring
-- **Access Controls**: Restrict administrative access appropriately
-- **Backup Security**: Ensure backup systems don't contain secrets
-- **Network Security**: Deploy behind appropriate network security controls
-
-### Security Advisories
-
-Security updates are published through release notes.
-
-## Contact Information
-
-**Security Contact**: johan{a}haals.se
-
-For urgent security issues, please include "SECURITY" in the email subject line.
-
-**PGP Key**: Available on request for sensitive communications
+PGP-ключ доступен по запросу.
 
 ---
 
-I appreciate your efforts in keeping farpass secure for everyone. Your responsible disclosure helps maintain the security and privacy that users depend on.
+Спасибо за помощь в обеспечении безопасности FarPass — ответственное раскрытие уязвимостей помогает защищать всех пользователей.

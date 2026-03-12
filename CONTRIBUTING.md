@@ -1,304 +1,98 @@
-﻿# How to contribute to farpass
+﻿## Как внести вклад в FarPass
 
-First of all, thank you for taking the time to contribute to farpass! 🎉
+Прежде всего — спасибо, что хотите помочь FarPass! 🎉
 
-## Getting Started
+### Начало работы
 
-### Prerequisites
+**Требования**
 
-**Backend Development (Go):**
-- Go 1.21+
-- Redis or Memcached for storage
-- Git
+- Бэкенд: Go 1.21+, Redis или Memcached, Git
+- Фронтенд: Node.js 18+, Bun, современный браузер
 
-**Frontend Development (React/TypeScript):**
-- Node.js 18+
-- [Bun](https://bun.sh) runtime & package manager
-- Modern browser for testing
+### Локальная настройка
 
-### Local Development Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/BarkovSA/farpass.git
-   cd farpass
-   ```
-
-2. **Backend setup:**
-   ```bash
-   # Start Redis (for development)
-   docker run -d -p 6379:6379 redis:alpine
-
-   # Run the server
-   go run cmd/farpass-server/main.go --redis=redis://localhost:6379/0
-   ```
-
-3. **Frontend setup:**
-   ```bash
-   cd website/
-   bun install
-   bun dev  # Starts development server on http://localhost:3000
-   ```
-
-## Development Workflow
-
-### Code Quality & Linting
-
-We maintain high code quality standards with automated linting and formatting:
-
-**Frontend (TypeScript/React):**
 ```bash
-cd website/
-
-# Lint and check formatting
-yarn lint
-
-# Auto-fix linting issues and format code
-yarn format
-
-# Type checking
-yarn build  # Includes TypeScript compilation
+git clone https://github.com/BarkovSA/farpass.git
+cd farpass
 ```
 
-**Backend (Go):**
+Бэкенд (разработка):
+
 ```bash
-# Format code
+docker run -d -p 6379:6379 redis:alpine
+go run cmd/farpass-server/main.go --redis=redis://localhost:6379/0
+```
+
+Фронтенд:
+
+```bash
+cd website/
+bun install
+bun dev
+```
+
+### Качество кода и тесты
+
+Фронтенд:
+
+```bash
+cd website/
+yarn lint
+yarn format
+yarn build
+```
+
+Бэкенд:
+
+```bash
 go fmt ./...
-
-# Lint (install golangci-lint first)
 golangci-lint run
-
-# Vet code
 go vet ./...
 ```
 
-### Code Style Guidelines
+Тестирование:
 
-**Frontend:**
-- Use function declarations instead of arrow functions (`function foo() {}` not `const foo = () => {}`)
-- TypeScript strict mode enabled
-- Prettier for code formatting
-- ESLint for code quality
-- No React.FC usage - prefer function declarations
+Фронтенд: `bun run test`
+Бэкенд: `go test ./...` и `go test -cover ./...`
 
-**Backend:**
-- Standard Go formatting with `gofmt`
-- Follow Go best practices and idioms
-- Use meaningful variable and function names
-- Include comprehensive error handling
+Требования к покрытию: unit, integration, e2e; 100% для крипто-критичных мест.
 
-### Testing
+### Pull requests
 
-Testing is mandatory for all contributions. We use a hybrid testing approach:
+Перед PR:
 
-**Frontend Testing:**
-```bash
-cd website/
+1. Обсудите крупные изменения в issue
+2. Небольшие баг-фиксы можно прямо в PR
+3. Следуйте стилю кода
 
-# Run end-to-end tests
-bun run test
+Обязательное в PR:
 
-```
+- тесты
+- проходящий линт
+- обновлённая дока при необходимости
 
-**Backend Testing:**
-```bash
-# Run all tests
-go test ./...
+Шаблон PR описан в репозитории.
 
-# Run tests with coverage
-go test -cover ./...
+### Как помочь
 
-# Run specific package tests
-go test ./pkg/server/...
-```
+- документация
+- тесты
+- доступность
+- локализация
+- производительность
+- безопасность
 
-**Test Requirements:**
-- **Unit tests** for all utility functions and business logic
-- **Integration tests** for API endpoints
-- **End-to-end tests** for complete user workflows
-- **100% coverage** required for security-critical functions (crypto, random generation)
-- **95%+ coverage** target for API layers
+### Установка и деплой
 
-## I found a bug
-
-Please submit an issue with a detailed description and as much relevant information as possible:
-
-**For Backend Issues:**
-- Go version
-- Operating system
-- Database backend (Redis/Memcached version)
-- Server configuration
-- Log output (if available)
-
-**For Frontend Issues:**
-- Browser name and version
-- Operating system
-- Console errors (F12 Developer Tools)
-- Steps to reproduce
-- Expected vs actual behavior
-
-**Security Issues:**
-Please report security vulnerabilities privately by emailing the maintainers rather than opening a public issue.
-
-## Pull Requests and Features
-
-### Before Submitting
-
-1. **Discuss larger changes** in an issue before implementing
-2. **Smaller tweaks** and bug fixes don't need prior discussion
-3. **Check existing issues** to avoid duplicate work
-4. **Follow the code style** outlined above
-
-### PR Requirements
-
-- [ ] **Tests included** - All changes must have appropriate tests
-- [ ] **Linting passes** - `bun run lint` (frontend) and `golangci-lint run` (backend)
-- [ ] **Tests pass** - Both unit and integration tests
-- [ ] **Documentation updated** - Update relevant docs if needed
-- [ ] **Security reviewed** - Consider security implications of changes
-
-### PR Description Template
-
-```markdown
-## Description
-Brief description of changes and why they're needed.
-
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-
-## Testing
-- [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
-- [ ] E2E tests added/updated
-- [ ] Manual testing completed
-
-## Security Considerations
-Describe any security implications and how they've been addressed.
-
-## Checklist
-- [ ] Code follows project style guidelines
-- [ ] Self-review completed
-- [ ] Tests pass locally
-- [ ] Documentation updated
-```
-
-### Commit Message Guidelines
-
-Use clear, descriptive commit messages:
+Docker-compose:
 
 ```bash
-# Good examples
-Add streaming upload support for large files
-Fix one-time secret enforcement in upload flow
-Update README with new deployment options
-
-# Avoid
-Fix bug
-Update code
-WIP
-```
-
-## Development Guidelines
-
-### Frontend Architecture
-
-The frontend follows a modern React architecture:
-
-```
-src/
-├── app/           # Main application setup
-├── features/      # Feature-based components
-├── shared/        # Reusable utilities and components
-│   ├── components/  # UI components
-│   ├── hooks/       # Custom React hooks
-│   ├── lib/         # Utility functions
-│   └── types/       # TypeScript type definitions
-└── tests/         # Test utilities
-```
-
-### Backend Architecture
-
-The backend uses a clean architecture pattern:
-
-```
-cmd/               # CLI applications
-pkg/
-├── server/        # HTTP server and routing
-├── farpass/        # Core business logic
-└── ...           # Other packages
-```
-
-### Adding New Features
-
-1. **Security First**: Consider security implications of all changes
-2. **Test-Driven Development**: Write tests before implementation
-3. **Documentation**: Update relevant documentation
-4. **Configuration**: Make features configurable when appropriate
-5. **Backward Compatibility**: Maintain API compatibility unless it's a breaking change
-
-### Performance Considerations
-
-- **Frontend**: Use React best practices, avoid unnecessary re-renders
-- **Backend**: Consider memory usage and CPU efficiency
-- **Crypto**: Ensure cryptographic operations are performed client-side
-- **Streaming**: Use streaming for large file uploads/downloads
-
-## I want to help out
-
-Fantastic! Here are ways to contribute:
-
-### Good First Issues
-Look for issues tagged with:
-- `good first issue` - Perfect for newcomers
-- `help wanted` - Ready to be picked up
-- `documentation` - Improve docs and guides
-
-### Areas That Need Help
-- **Documentation improvements** - Always welcome
-- **Test coverage** - Expand test suites
-- **Accessibility** - Improve a11y compliance
-- **Internationalization** - Add new language translations
-- **Performance** - Optimize critical paths
-- **Security** - Security audits and improvements
-
-## I need installation help
-
-farpass is designed to be easy to deploy:
-
-### Docker Deployment (Recommended)
-```bash
-# Basic setup with docker-compose
 cd deploy/
 docker-compose up -d
 ```
 
-### Manual Installation
-For custom setups, refer to:
-- [README.md](README.md) - Complete installation guide
-- [deploy/](deploy/) - Example configurations
-- [Documentation](https://farpass.se) - Detailed deployment guides
-
-### Getting Help
-- Check existing [GitHub issues](https://github.com/BarkovSA/farpass/issues)
-- Read the [documentation](https://farpass.se)
-- Ask questions in GitHub discussions
-
-## Code of Conduct
-
-- Be respectful and inclusive
-- Focus on constructive feedback
-- Help create a welcoming environment for all contributors
-- Follow the [GitHub Community Guidelines](https://docs.github.com/en/site-policy/github-terms/github-community-guidelines)
-
-## Resources
-
-- **Project Documentation**: [README.md](README.md)
-- **API Documentation**: Available in the codebase
-- **Issue Tracker**: [GitHub Issues](https://github.com/BarkovSA/farpass/issues)
+Для продакшена смотрите `deploy/`.
 
 ---
 
-Thank you for contributing to farpass! Your efforts help make secure secret sharing accessible to everyone. 🔐
+Спасибо за вклад в FarPass! 🔐
