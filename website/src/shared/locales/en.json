@@ -54,6 +54,7 @@
     "title": "Secret stored securely",
     "subtitle": "Your secret has been encrypted and stored. Share these links to provide access.",
     "subtitleDownloadOnce": "Secret can only be downloaded once. So do not open the link yourself. The cautious should send the decryption key in a separate communication channel.",
+    "subtitleLinkValidity": "The link is valid for 1 day or 10 views.",
     "reminderTitle": "Remember",
     "rowLabelOneClick": "One-click link",
     "rowOneClickDescription": "Share this link for direct access to the secret",

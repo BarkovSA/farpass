@@ -27,12 +27,9 @@ export default function Upload() {
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [encrypting, setEncrypting] = useState(false);
-  const [showAnimation, setShowAnimationState] = useState(getInitialAnimationEnabled);
-
-  const setShowAnimation = (val: boolean) => {
-    setShowAnimationState(val);
-    try { localStorage.setItem(ANIMATION_ENABLED_KEY, String(val)); } catch { void 0; }
-  };
+  // Анимация всегда отключена
+  const showAnimation = false;
+  const setShowAnimation = () => {};
 
   const {
     oneTime,
@@ -49,8 +46,8 @@ export default function Upload() {
 
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      expiration: '3600',
-      oneTime: true,
+      expiration: '86400', // 1 день
+      oneTime: false, // 10 открытий
       generateKey: true,
       customPassword: '',
     },
@@ -71,7 +68,10 @@ export default function Upload() {
     if (f) setFile(f);
   }
 
+  // Принудительно выставляем значения по умолчанию
   async function onSubmit(form: FormValues) {
+    form.expiration = '86400';
+    form.oneTime = false;
     setError(null);
     if (!file) {
       setError(t('upload.errorSelectFile'));
@@ -205,6 +205,8 @@ export default function Upload() {
           expirationLabel={t('upload.expirationLegendFile')}
           showAnimation={showAnimation}
           setShowAnimation={setShowAnimation}
+          hideExpiration
+          hideOneTime
         />
 
         <div className="form-control mt-8">

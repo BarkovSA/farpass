@@ -130,7 +130,6 @@ export default function HowItWorks({ visible = true }: HowItWorksProps) {
           }}
         >
           {STEPS.map((step, idx) => {
-            const num = `${idx + 1}.`;
             const statusColor =
               theme.style === 'matrix'
                 ? idx < 3
@@ -142,16 +141,6 @@ export default function HowItWorks({ visible = true }: HowItWorksProps) {
 
             return (
               <div key={step.labelKey} className="flex items-start" style={{ marginBottom: idx < STEPS.length - 1 ? '0.35rem' : 0 }}>
-                <span
-                  style={{
-                    color: theme.accent,
-                    fontWeight: 700,
-                    minWidth: '1.5rem',
-                    display: 'inline-block',
-                  }}
-                >
-                  {num}
-                </span>
                 <span style={{ color: statusColor, fontWeight: 600 }}>
                   {t(step.labelKey)}
                 </span>
@@ -193,14 +182,11 @@ export default function HowItWorks({ visible = true }: HowItWorksProps) {
           <div key={step.labelKey} className="flex items-start">
             {/* Карточка шага */}
             <div className="flex flex-col items-center w-28 sm:w-32">
-              {/* Номер + иконка */}
+              {/* Только иконка, без номера */}
               <div className="relative mb-2">
                 <div className="w-14 h-14 rounded-full bg-base-100 border-2 border-base-300 flex items-center justify-center text-2xl shadow-sm">
                   {step.icon}
                 </div>
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-content text-xs font-bold flex items-center justify-center">
-                  {idx + 1}
-                </span>
               </div>
 
               {/* Текст */}

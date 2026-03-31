@@ -23,12 +23,9 @@ export default function CreateSecret() {
   const theme = useTerminalTheme();
   const [secret, setSecret] = useState('');
   const [encrypting, setEncrypting] = useState(false);
-  const [showAnimation, setShowAnimationState] = useState(getInitialAnimationEnabled);
-
-  const setShowAnimation = (val: boolean) => {
-    setShowAnimationState(val);
-    try { localStorage.setItem(ANIMATION_ENABLED_KEY, String(val)); } catch { void 0; }
-  };
+  // Анимация всегда отключена
+  const showAnimation = false;
+  const setShowAnimation = () => {};
 
   const {
     oneTime,
@@ -55,9 +52,19 @@ export default function CreateSecret() {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<Secret>();
+  } = useForm<Secret>({
+    defaultValues: {
+      expiration: '86400', // 1 день
+      oneTime: false, // 10 открытий (oneTime=false)
+      generateKey: true,
+      customPassword: '',
+    },
+  });
 
+  // Принудительно выставляем значения по умолчанию (на случай если кто-то попытается изменить)
   async function onSubmit(form: Secret) {
+    form.expiration = '86400';
+    form.oneTime = false;
     if (!form.secret) {
       return;
     }
@@ -203,6 +210,8 @@ export default function CreateSecret() {
           setCustomPassword={setCustomPassword}
           showAnimation={showAnimation}
           setShowAnimation={setShowAnimation}
+          hideExpiration
+          hideOneTime
         />
       </form>
     </>
