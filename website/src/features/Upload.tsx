@@ -8,10 +8,7 @@ import { useSecretForm } from '@shared/hooks/useSecretForm';
 import { SecretOptions } from '@shared/components/SecretOptions';
 import Result from '@features/display-secret/Result';
 import EncryptingOverlay from '@shared/components/EncryptingOverlay';
-import {
-  ANIMATION_ENABLED_KEY,
-  getInitialAnimationEnabled,
-} from '@shared/theme/theme';
+// animation flags intentionally disabled
 
 type FormValues = {
   expiration: string;

@@ -12,10 +12,7 @@ import { TerminalTextarea } from '@shared/components/terminal/TerminalInput';
 import TerminalButton from '@shared/components/terminal/TerminalButton';
 import TerminalLabel from '@shared/components/terminal/TerminalLabel';
 import EncryptingOverlay from '@shared/components/EncryptingOverlay';
-import {
-  ANIMATION_ENABLED_KEY,
-  getInitialAnimationEnabled,
-} from '@shared/theme/theme';
+// animation flags intentionally disabled
 
 export default function CreateSecret() {
   const { t } = useTranslation();
