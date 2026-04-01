@@ -1,0 +1,27 @@
+# ── Stage 1: Go build ─────────────────────────────────────────────────────────
+FROM golang:1.24-bookworm AS app
+
+RUN mkdir -p /farpass
+WORKDIR /farpass
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux \
+    go build -ldflags="-s -w" -o farpass        ./cmd/farpass && \
+    go build -ldflags="-s -w" -o farpass-server ./cmd/farpass-server
+
+# ── Stage 2: Финальный образ ───────────────────────────────────────────────────
+# Фронтенд собран локально (website/dist) — не требует bun внутри Docker
+FROM gcr.io/distroless/base-debian12
+
+LABEL org.opencontainers.image.title="FarPass" \
+      org.opencontainers.image.description="Secure one-time secret sharing (local build)"
+
+COPY --from=app /farpass/farpass /farpass/farpass-server /
+COPY website/dist /public
+
+USER 1000
+ENTRYPOINT ["/farpass-server"]

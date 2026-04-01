@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI / docs
+.github
+*.md
+CONTRIBUTING.md
+SECURITY.md
+LICENSE
+
+# Локальная разработка
+deploy/
+logo/
+
+# Node — node_modules не нужен, но dist нужен для COPY
+website/node_modules
+website/.vite
+
+# Go тестовые артефакты
+**/*_test.go
+**/*.test
+
+# IDE
+.vscode
+.idea
+*.suo
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
